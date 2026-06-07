@@ -40,14 +40,38 @@
     line-height: 1.6;
   }
 
+  /* sticky header */
+  .topbar {
+    position: sticky; top: 0; z-index: 60;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 10px 16px;
+    background: rgba(246, 244, 238, 0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(120, 110, 90, 0.10);
+  }
+  .topnav { display: flex; align-items: center; gap: 6px; }
+  .topnav a {
+    text-decoration: none;
+    color: var(--ink);
+    font-weight: 600;
+    font-size: .92rem;
+    padding: 8px 14px;
+    border-radius: 999px;
+    transition: background .2s ease, color .2s ease;
+  }
+  .topnav a:hover { background: rgba(154, 169, 130, 0.18); color: var(--sage-deep); }
+  .topnav a.topnav-cta {
+    background: var(--sage-deep);
+    color: #fff;
+  }
+  .topnav a.topnav-cta:hover { background: var(--sage); color: #fff; }
+
   /* language switcher */
   .lang {
-    position: fixed; top: 16px; right: 16px; z-index: 50;
-    display: flex; gap: 4px;
-    background: var(--card); backdrop-filter: blur(8px);
+    display: flex; gap: 4px; flex-shrink: 0;
+    background: rgba(255,255,255,.55);
     border: 1px solid rgba(255,255,255,.7);
     border-radius: 999px; padding: 4px;
-    box-shadow: 0 10px 24px -14px rgba(120,110,90,.5);
   }
   .lang button {
     border: 0; background: transparent; cursor: pointer;
@@ -209,6 +233,7 @@
   .cd-lbl { font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-soft); }
 
   section { padding: 56px 0 10px; }
+  section[id], .rsvp-banner { scroll-margin-top: 72px; }
   .section-title {
     font-family: "Pacifico", cursive;
     font-size: clamp(1.8rem, 6vw, 2.6rem);
@@ -329,7 +354,10 @@
 
   @media (max-width: 640px) {
     .cards { grid-template-columns: 1fr; }
-    .lang { top: 10px; right: 10px; }
+    .topbar { padding: 8px 10px; gap: 8px; }
+    .topnav { gap: 2px; }
+    .topnav a { font-size: .82rem; padding: 7px 10px; }
+    .lang button { padding: 6px 9px; font-size: .74rem; }
   }
 
   /* gentle entrance */
@@ -339,11 +367,18 @@
 </head>
 <body>
 
-<nav class="lang" id="lang" aria-label="Idioma / Language / Sprache">
-  <button data-lang="pt">PT</button>
-  <button data-lang="en">EN</button>
-  <button data-lang="de">DE</button>
-</nav>
+<header class="topbar">
+  <nav class="topnav" aria-label="Seções">
+    <a href="#localizacao" data-i18n="nav_loc"></a>
+    <a href="#presente" data-i18n="nav_gift"></a>
+    <a href="#rsvp" class="topnav-cta" data-i18n="nav_rsvp"></a>
+  </nav>
+  <nav class="lang" id="lang" aria-label="Idioma / Language / Sprache">
+    <button data-lang="pt">PT</button>
+    <button data-lang="en">EN</button>
+    <button data-lang="de">DE</button>
+  </nav>
+</header>
 
 <div class="floaties" id="floaties"></div>
 
@@ -470,6 +505,7 @@
     pt: {
       _htmlLang: "pt-BR",
       docTitle: "Chá de Bebê Nico/Luna",
+      nav_loc: "Local", nav_gift: "Presente", nav_rsvp: "Confirmar",
       eyebrow: "Save the date",
       title: "Chá de Bebê",
       babyname: "Nico ou Luna",
@@ -504,6 +540,7 @@
     en: {
       _htmlLang: "en",
       docTitle: "Baby Shower Nico/Luna",
+      nav_loc: "Location", nav_gift: "Gift", nav_rsvp: "RSVP",
       eyebrow: "Save the date",
       title: "Baby Shower",
       babyname: "Nico or Luna",
@@ -538,6 +575,7 @@
     de: {
       _htmlLang: "de",
       docTitle: "Babyparty Nico/Luna",
+      nav_loc: "Ort", nav_gift: "Geschenk", nav_rsvp: "Zusagen",
       eyebrow: "Save the date",
       title: "Babyparty",
       babyname: "Nico oder Luna",
