@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Chá de Bebê</title>
+<title>Baby Shower Nico/Luna</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%239aa982'/><path transform='translate(4 4)' d='M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z' fill='%23ffffff'/></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -468,6 +469,7 @@
   const I18N = {
     pt: {
       _htmlLang: "pt-BR",
+      docTitle: "Chá de Bebê Nico/Luna",
       eyebrow: "Save the date",
       title: "Chá de Bebê",
       babyname: "Nico ou Luna",
@@ -501,6 +503,7 @@
     },
     en: {
       _htmlLang: "en",
+      docTitle: "Baby Shower Nico/Luna",
       eyebrow: "Save the date",
       title: "Baby Shower",
       babyname: "Nico or Luna",
@@ -534,6 +537,7 @@
     },
     de: {
       _htmlLang: "de",
+      docTitle: "Babyparty Nico/Luna",
       eyebrow: "Save the date",
       title: "Babyparty",
       babyname: "Nico oder Luna",
@@ -570,6 +574,7 @@
   function applyLang(lang) {
     const dict = I18N[lang] || I18N.pt;
     document.documentElement.lang = dict._htmlLang;
+    if (dict.docTitle) document.title = dict.docTitle;
     document.querySelectorAll("[data-i18n]").forEach(function (el) {
       const key = el.getAttribute("data-i18n");
       if (dict[key] != null) el.innerHTML = dict[key];
