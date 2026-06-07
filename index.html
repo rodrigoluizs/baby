@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chá de Bebê</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream: #f6f4ee;
+    --cream-2: #efece2;
+    --sage: #9aa982;
+    --sage-deep: #7d8d68;
+    --peach: #e6b99a;
+    --peach-soft: #f0d3bf;
+    --ink: #5c5a52;
+    --ink-soft: #837f74;
+    --sun: #f4cf6a;
+    --pink: #e7b6b0;
+    --card: rgba(255, 255, 255, 0.72);
+    --shadow: 0 18px 40px -18px rgba(120, 110, 90, 0.45);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: "Quicksand", sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 600px at 80% -5%, #fff7e6 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 20%, #eef2e6 0%, transparent 55%),
+      linear-gradient(180deg, var(--cream) 0%, var(--cream-2) 100%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* language switcher */
+  .lang {
+    position: fixed; top: 16px; right: 16px; z-index: 50;
+    display: flex; gap: 4px;
+    background: var(--card); backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,.7);
+    border-radius: 999px; padding: 4px;
+    box-shadow: 0 10px 24px -14px rgba(120,110,90,.5);
+  }
+  .lang button {
+    border: 0; background: transparent; cursor: pointer;
+    font-family: "Quicksand", sans-serif; font-weight: 700;
+    color: var(--ink-soft); font-size: .8rem;
+    padding: 7px 12px; border-radius: 999px; transition: all .2s ease;
+  }
+  .lang button:hover { color: var(--sage-deep); }
+  .lang button.active { background: var(--sage-deep); color: #fff; }
+
+  /* floating decorative emojis */
+  .floaties { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .floatie {
+    position: absolute;
+    font-size: clamp(1.6rem, 4vw, 3rem);
+    opacity: 0.85;
+    animation: drift linear infinite;
+    filter: drop-shadow(0 6px 8px rgba(0,0,0,0.06));
+  }
+  .floatie svg { width: 1em; height: 1em; stroke-width: 1.6; }
+  @keyframes drift {
+    0%   { transform: translateY(0) rotate(0deg); }
+    50%  { transform: translateY(-22px) rotate(8deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 0 22px; }
+
+  /* HERO */
+  header.hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 60px 22px;
+  }
+
+  .bunting {
+    display: flex;
+    gap: 0;
+    margin-bottom: 26px;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.08));
+  }
+  .flag {
+    width: 0; height: 0;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    border-top: 26px solid var(--sage);
+    margin: 0 -1px;
+    transform-origin: top center;
+    animation: sway 3.5s ease-in-out infinite;
+  }
+  .flag:nth-child(odd)  { border-top-color: var(--peach); animation-delay: .3s; }
+  .flag:nth-child(3n)   { border-top-color: var(--sun); animation-delay: .6s; }
+  @keyframes sway { 0%,100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+
+  .eyebrow {
+    font-size: clamp(.9rem, 2.5vw, 1.1rem);
+    letter-spacing: .35em;
+    text-transform: uppercase;
+    color: var(--sage-deep);
+    font-weight: 600;
+  }
+
+  h1.title {
+    font-family: "Pacifico", cursive;
+    font-weight: 400;
+    color: var(--sage-deep);
+    font-size: clamp(3.4rem, 12vw, 7rem);
+    line-height: 1;
+    margin: 10px 0 4px;
+    text-shadow: 0 4px 0 rgba(255,255,255,.6);
+  }
+
+  .babyname-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 2px;
+  }
+  .babyname {
+    font-family: "Pacifico", cursive;
+    color: var(--peach);
+    font-size: clamp(1.6rem, 6vw, 3rem);
+  }
+  .name-ico {
+    width: clamp(32px, 7vw, 52px);
+    height: clamp(32px, 7vw, 52px);
+    stroke-width: 1.7;
+    flex-shrink: 0;
+    animation: bob 2.6s ease-in-out infinite;
+  }
+  .name-ico-left  { color: var(--sage-deep); }
+  .name-ico-right { color: var(--pink); animation-delay: .5s; }
+
+  .subtitle {
+    margin-top: 18px;
+    font-size: clamp(1.05rem, 3vw, 1.4rem);
+    color: var(--ink-soft);
+    font-weight: 500;
+    max-width: 30ch;
+  }
+
+  .hero-animals {
+    margin-top: 28px;
+    display: flex;
+    gap: 22px;
+  }
+  .hero-animals svg { width: clamp(42px, 9vw, 62px); height: clamp(42px, 9vw, 62px); stroke-width: 1.7; }
+  .hero-animals span:nth-child(1) svg { color: var(--peach); }
+  .hero-animals span:nth-child(2) svg { color: #e6b94c; }
+  .hero-animals span { animation: bob 2.6s ease-in-out infinite; display: flex; }
+  .hero-animals span:nth-child(2){ animation-delay:.4s; }
+  .hero-animals span:nth-child(3){ animation-delay:.8s; }
+  .hero-animals span:nth-child(4){ animation-delay:1.2s; }
+  @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+  .scroll-hint {
+    position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
+    color: var(--ink-soft); font-size: .85rem; letter-spacing: .2em; text-transform: uppercase;
+    animation: bob 2s ease-in-out infinite;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .scroll-ico { width: 18px; height: 18px; }
+
+  /* DATE + COUNTDOWN */
+  .date-card {
+    background: var(--card);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,.7);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    padding: 38px 28px;
+    text-align: center;
+    margin-top: -40px;
+  }
+  .big-date {
+    font-size: clamp(2.6rem, 9vw, 4.6rem);
+    font-weight: 700;
+    color: var(--sage-deep);
+    letter-spacing: .02em;
+  }
+  .big-date span { color: var(--peach); }
+  .when { font-size: clamp(1.1rem, 3.5vw, 1.6rem); color: var(--ink-soft); font-weight: 600; margin-top: 4px; }
+
+  .countdown { display: flex; justify-content: center; gap: 14px; margin-top: 26px; flex-wrap: wrap; }
+  .cd-box {
+    background: linear-gradient(180deg, #fff, #f7f3ea);
+    border-radius: 18px;
+    padding: 14px 10px;
+    min-width: 78px;
+    box-shadow: 0 10px 22px -14px rgba(120,110,90,.5);
+  }
+  .cd-num { font-size: clamp(1.6rem, 6vw, 2.4rem); font-weight: 700; color: var(--sage-deep); }
+  .cd-lbl { font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-soft); }
+
+  section { padding: 56px 0 10px; }
+  .section-title {
+    font-family: "Pacifico", cursive;
+    font-size: clamp(1.8rem, 6vw, 2.6rem);
+    color: var(--sage-deep);
+    text-align: center;
+    margin-bottom: 26px;
+  }
+
+  /* INFO CARDS */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .card {
+    background: var(--card);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,.7);
+    border-radius: 24px;
+    padding: 28px 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform .25s ease, box-shadow .25s ease;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 26px 50px -20px rgba(120,110,90,.55); }
+  .card .ico {
+    width: 66px; height: 66px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 6px;
+    box-shadow: 0 10px 20px -10px rgba(120,110,90,.55);
+  }
+  .card .ico svg { width: 30px; height: 30px; color: #fff; stroke-width: 2; }
+  .ico-sage  { background: linear-gradient(135deg, var(--sage), var(--sage-deep)); }
+  .ico-peach { background: linear-gradient(135deg, var(--peach), #d99e78); }
+  .ico-sun   { background: linear-gradient(135deg, #f6d77a, #e6b94c); }
+  .card h3 { margin: 12px 0 6px; font-size: 1.25rem; color: var(--sage-deep); }
+  .card p { font-size: .95rem; color: var(--ink-soft); }
+  .card .cta { display:inline-block; margin-top:12px; font-weight:700; color: var(--peach); }
+
+  /* REMINDERS */
+  .reminders {
+    background: var(--card);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,.7);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    padding: 34px 30px;
+  }
+  .reminders ul { list-style: none; display: grid; gap: 16px; }
+  .reminders li { display: flex; gap: 14px; align-items: flex-start; font-size: 1.05rem; }
+  .reminders li .r-ico { line-height: 1; flex-shrink: 0; display: flex; }
+  .reminders li .r-ico svg { width: 24px; height: 24px; color: var(--sage-deep); stroke-width: 2; }
+  .reminders .highlight { color: var(--peach); font-weight: 700; }
+  .map-embed {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 14px 30px -16px rgba(120,110,90,.55);
+    margin-bottom: 20px;
+    border: 3px solid #fff;
+  }
+  .map-embed iframe { width: 100%; height: 320px; border: 0; display: block; }
+  .loc-details { display: flex; flex-direction: column; gap: 8px; align-items: center; margin: 6px 0 4px; }
+  .loc-details p { display: flex; align-items: center; gap: 8px; font-size: 1rem; color: var(--ink-soft); }
+  .loc-details svg { width: 20px; height: 20px; color: var(--sage-deep); stroke-width: 2; flex-shrink: 0; }
+  .inline-pin { color: var(--peach); width: 26px; height: 26px; stroke-width: 2; }
+  .txt-ico { width: 1em; height: 1em; display: inline-block; vertical-align: -0.18em; stroke-width: 2; }
+  .heart-pink { color: var(--pink); fill: var(--pink); }
+
+  /* RSVP banner */
+  .rsvp-banner {
+    text-align: center;
+    margin: 46px 0 10px;
+    padding: 40px 26px;
+    border-radius: 28px;
+    background: linear-gradient(135deg, var(--sage) 0%, var(--sage-deep) 100%);
+    color: #fff;
+    box-shadow: var(--shadow);
+  }
+  .rsvp-banner h2 { font-family: "Pacifico", cursive; font-weight: 400; font-size: clamp(1.8rem,6vw,2.6rem); }
+  .rsvp-banner p { opacity: .92; margin-top: 8px; }
+  .btn {
+    display: inline-block;
+    margin-top: 20px;
+    background: #fff;
+    color: var(--sage-deep);
+    font-weight: 700;
+    padding: 14px 34px;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 12px 24px -10px rgba(0,0,0,.35);
+    transition: transform .2s ease;
+  }
+  .btn:hover { transform: scale(1.05); }
+  .deadline { margin-top: 14px; font-size: .9rem; opacity: .9; }
+
+  .map-btn {
+    display: inline-block;
+    margin-top: 16px;
+    background: var(--sage-deep);
+    color: #fff;
+    font-weight: 700;
+    padding: 12px 28px;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 12px 24px -12px rgba(120,110,90,.6);
+    transition: transform .2s ease;
+  }
+  .map-btn:hover { transform: scale(1.05); }
+  .gift-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .map-btn-alt { background: linear-gradient(135deg, var(--peach), #d99e78); }
+
+  footer { text-align: center; padding: 50px 22px 60px; color: var(--ink-soft); }
+  footer .hearts { display: flex; justify-content: center; gap: 14px; }
+  footer .hearts svg { width: 28px; height: 28px; stroke-width: 1.8; }
+  footer .hearts i:nth-child(1) svg { color: var(--sage-deep); }
+  footer .hearts i:nth-child(2) svg { color: var(--pink); }
+  footer .hearts i:nth-child(3) svg { color: var(--peach); }
+
+  @media (max-width: 640px) {
+    .cards { grid-template-columns: 1fr; }
+    .lang { top: 10px; right: 10px; }
+  }
+
+  /* gentle entrance */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<nav class="lang" id="lang" aria-label="Idioma / Language / Sprache">
+  <button data-lang="pt">PT</button>
+  <button data-lang="en">EN</button>
+  <button data-lang="de">DE</button>
+</nav>
+
+<div class="floaties" id="floaties"></div>
+
+<header class="hero">
+  <div class="bunting" aria-hidden="true">
+    <span class="flag"></span><span class="flag"></span><span class="flag"></span>
+    <span class="flag"></span><span class="flag"></span><span class="flag"></span>
+    <span class="flag"></span><span class="flag"></span><span class="flag"></span>
+  </div>
+
+  <p class="eyebrow" data-i18n="eyebrow"></p>
+  <h1 class="title" data-i18n="title"></h1>
+  <div class="babyname-row">
+    <i data-lucide="rabbit" class="name-ico name-ico-left"></i>
+    <p class="babyname" data-i18n="babyname"></p>
+    <i data-lucide="flower-2" class="name-ico name-ico-right"></i>
+  </div>
+  <p class="subtitle" data-i18n="subtitle"></p>
+
+  <div class="hero-animals" aria-hidden="true">
+    <span><i data-lucide="baby"></i></span>
+    <span><i data-lucide="sun"></i></span>
+  </div>
+
+  <div class="scroll-hint" data-i18n="scroll"></div>
+</header>
+
+<div class="wrap">
+
+  <div class="date-card reveal">
+    <div class="big-date">05 <span>|</span> 07 <span>|</span> 2026</div>
+    <div class="when" data-i18n="when"></div>
+    <div class="countdown" id="countdown" aria-label="Countdown">
+      <div class="cd-box"><div class="cd-num" id="cd-days">--</div><div class="cd-lbl" data-i18n="cd_days"></div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-hours">--</div><div class="cd-lbl" data-i18n="cd_hours"></div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-mins">--</div><div class="cd-lbl" data-i18n="cd_mins"></div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-secs">--</div><div class="cd-lbl" data-i18n="cd_secs"></div></div>
+    </div>
+  </div>
+
+  <section class="reveal">
+    <h2 class="section-title" data-i18n="info_title"></h2>
+    <div class="cards">
+      <a class="card" href="#rsvp">
+        <div class="ico ico-sage"><i data-lucide="party-popper"></i></div>
+        <h3 data-i18n="c1_title"></h3>
+        <p data-i18n="c1_desc"></p>
+        <span class="cta" data-i18n="c1_cta"></span>
+      </a>
+      <a class="card" href="#localizacao">
+        <div class="ico ico-peach"><i data-lucide="map-pin"></i></div>
+        <h3 data-i18n="c2_title"></h3>
+        <p data-i18n="c2_desc"></p>
+        <span class="cta" data-i18n="c2_cta"></span>
+      </a>
+      <a class="card" href="#presente">
+        <div class="ico ico-sun"><i data-lucide="gift"></i></div>
+        <h3 data-i18n="c3_title"></h3>
+        <p data-i18n="c3_desc"></p>
+        <span class="cta" data-i18n="c3_cta"></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2 class="section-title" data-i18n="rem_title"></h2>
+    <div class="reminders">
+      <ul>
+        <li><span class="r-ico"><i data-lucide="cup-soda"></i></span><span data-i18n="rem_1"></span></li>
+        <li><span class="r-ico"><i data-lucide="cloud-rain"></i></span><span data-i18n="rem_2"></span></li>
+        <li><span class="r-ico"><i data-lucide="calendar-check"></i></span><span data-i18n="rem_3"></span></li>
+        <li><span class="r-ico"><i data-lucide="heart"></i></span><span data-i18n="rem_4"></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="localizacao" class="reveal">
+    <h2 class="section-title" data-i18n="loc_title"></h2>
+    <div class="reminders" style="text-align:center;">
+      <div class="map-embed">
+        <iframe src="https://maps.google.com/maps?q=52.529056,13.443694&z=17&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Volkspark Friedrichshain" allowfullscreen></iframe>
+      </div>
+      <p style="font-size:1.3rem; display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="map-pin" class="inline-pin"></i> <strong data-i18n="loc_addr"></strong></p>
+      <div class="loc-details">
+        <p><i data-lucide="store"></i> <span data-i18n="loc_ref"></span></p>
+        <p><i data-lucide="tram-front"></i> <span data-i18n="loc_tram"></span></p>
+      </div>
+      <a class="map-btn" href="https://maps.app.goo.gl/VNUqX8U8XrxMbKxg8" target="_blank" rel="noopener" data-i18n="loc_sub"></a>
+    </div>
+  </section>
+
+  <section id="presente" class="reveal">
+    <h2 class="section-title" data-i18n="gift_title"></h2>
+    <div class="reminders" style="text-align:center;">
+      <p style="font-size:1.15rem;" data-i18n="gift_line"></p>
+      <p style="color:var(--ink-soft); margin-top:6px;" data-i18n="gift_sub"></p>
+      <div class="gift-btns">
+        <a class="map-btn" href="https://www.amazon.de/baby-reg/baby-silva-september-2026-berlin/3E5MNDFE6E8C4" target="_blank" rel="noopener" data-i18n="gift_btn"></a>
+        <a class="map-btn map-btn-alt" href="https://www.paypal.com/pools/c/9pQweuuPX9" target="_blank" rel="noopener" data-i18n="gift_btn2"></a>
+      </div>
+    </div>
+  </section>
+
+  <div id="rsvp" class="rsvp-banner reveal">
+    <h2 data-i18n="rsvp_h"></h2>
+    <p data-i18n="rsvp_p"></p>
+    <a class="btn" id="rsvp-btn" href="https://forms.gle/A43m9awgXFaiy7gh6" target="_blank" rel="noopener" data-i18n="rsvp_btn"></a>
+    <p class="deadline" data-i18n="rsvp_deadline"></p>
+  </div>
+
+  <footer>
+    <div class="hearts"><i data-lucide="rabbit"></i><i data-lucide="heart"></i><i data-lucide="baby"></i></div>
+  </footer>
+
+</div>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  // ---- render line icons ----
+  if (window.lucide) lucide.createIcons();
+
+  // ---- translations ----
+  const I18N = {
+    pt: {
+      _htmlLang: "pt-BR",
+      eyebrow: "Save the date",
+      title: "Chá de Bebê",
+      babyname: "Nico ou Luna",
+      subtitle: 'Venha celebrar com a gente esse momento tão especial <i data-lucide="heart" class="txt-ico heart-pink"></i>',
+      scroll: 'role para baixo <i data-lucide="chevron-down" class="scroll-ico"></i>',
+      when: "Domingo, das 15h às 19h",
+      cd_days: "dias", cd_hours: "horas", cd_mins: "min", cd_secs: "seg",
+      info_title: "Tudo que você precisa saber",
+      c1_title: "Confirmar", c1_desc: "Avise se você vem celebrar com a gente", c1_cta: "Confirmar →",
+      c2_title: "Localização", c2_desc: "Veja onde a festa vai acontecer", c2_cta: "Ver mapa →",
+      c3_title: "Presente", c3_desc: "Sugestões para presentear o bebê", c3_cta: "Ver lista →",
+      rem_title: "Lembretes",
+      rem_1: 'Traga a <span class="highlight">sua própria bebida</span> e uma <span class="highlight">toalha para sentar</span>.',
+      rem_2: 'Se chover, o evento será <span class="highlight">cancelado</span>.',
+      rem_3: 'Confirme sua presença até <span class="highlight">28 de junho de 2026</span>.',
+      rem_4: 'Venha com roupa confortável e muito amor para dar <i data-lucide="heart" class="txt-ico heart-pink"></i>',
+      loc_title: "Localização",
+      loc_addr: "Volkspark Friedrichshain",
+      loc_ref: "Próximo ao Kiosk Neuer Hain",
+      loc_tram: "Tram M10: Paul-Heyse-Straße",
+      loc_sub: "Abrir no Google Maps →",
+      gift_title: "Presente",
+      gift_line: "Sua presença já é o melhor presente!",
+      gift_sub: "Mas se quiser mimar o bebê, criamos uma lista na Amazon e uma vaquinha no PayPal.",
+      gift_btn: "Ver lista na Amazon →",
+      gift_btn2: "Contribuir no PayPal →",
+      rsvp_h: "Vem com a gente?",
+      rsvp_p: "Confirme sua presença e faça parte desse dia especial.",
+      rsvp_btn: "Confirmar presença \u{1F44B}",
+      rsvp_deadline: "✨ Confirme até <strong>28 de junho de 2026</strong>"
+    },
+    en: {
+      _htmlLang: "en",
+      eyebrow: "Save the date",
+      title: "Baby Shower",
+      babyname: "Nico or Luna",
+      subtitle: 'Come celebrate this special moment with us <i data-lucide="heart" class="txt-ico heart-pink"></i>',
+      scroll: 'scroll down <i data-lucide="chevron-down" class="scroll-ico"></i>',
+      when: "Sunday, 3–7 PM",
+      cd_days: "days", cd_hours: "hours", cd_mins: "min", cd_secs: "sec",
+      info_title: "Everything you need to know",
+      c1_title: "RSVP", c1_desc: "Let us know if you're coming", c1_cta: "RSVP →",
+      c2_title: "Location", c2_desc: "See where the party will be", c2_cta: "View map →",
+      c3_title: "Gift", c3_desc: "Gift ideas for the baby", c3_cta: "View list →",
+      rem_title: "Reminders",
+      rem_1: 'Bring <span class="highlight">your own drink</span> and a <span class="highlight">towel to sit on</span>.',
+      rem_2: 'If it rains, the event will be <span class="highlight">cancelled</span>.',
+      rem_3: 'Please RSVP by <span class="highlight">June 28, 2026</span>.',
+      rem_4: 'Come in comfy clothes and bring lots of love <i data-lucide="heart" class="txt-ico heart-pink"></i>',
+      loc_title: "Location",
+      loc_addr: "Volkspark Friedrichshain",
+      loc_ref: "Near the Neuer Hain kiosk",
+      loc_tram: "Tram M10: Paul-Heyse-Straße",
+      loc_sub: "Open in Google Maps →",
+      gift_title: "Gift",
+      gift_line: "Your presence is the best gift!",
+      gift_sub: "But if you'd like to spoil the baby, we made an Amazon registry and a PayPal pool.",
+      gift_btn: "View Amazon registry →",
+      gift_btn2: "Chip in via PayPal →",
+      rsvp_h: "Will you join us?",
+      rsvp_p: "RSVP and be part of this special day.",
+      rsvp_btn: "RSVP now \u{1F44B}",
+      rsvp_deadline: "✨ RSVP by <strong>June 28, 2026</strong>"
+    },
+    de: {
+      _htmlLang: "de",
+      eyebrow: "Save the date",
+      title: "Babyparty",
+      babyname: "Nico oder Luna",
+      subtitle: 'Feiere diesen besonderen Moment mit uns <i data-lucide="heart" class="txt-ico heart-pink"></i>',
+      scroll: 'nach unten scrollen <i data-lucide="chevron-down" class="scroll-ico"></i>',
+      when: "Sonntag, 15–19 Uhr",
+      cd_days: "Tage", cd_hours: "Std", cd_mins: "Min", cd_secs: "Sek",
+      info_title: "Alles, was du wissen musst",
+      c1_title: "Zusagen", c1_desc: "Sag uns Bescheid, ob du kommst", c1_cta: "Zusagen →",
+      c2_title: "Ort", c2_desc: "Sieh, wo die Feier stattfindet", c2_cta: "Karte ansehen →",
+      c3_title: "Geschenk", c3_desc: "Geschenkideen für das Baby", c3_cta: "Liste ansehen →",
+      rem_title: "Hinweise",
+      rem_1: 'Bring <span class="highlight">dein eigenes Getränk</span> und ein <span class="highlight">Handtuch zum Sitzen</span> mit.',
+      rem_2: 'Bei Regen wird die Feier <span class="highlight">abgesagt</span>.',
+      rem_3: 'Bitte sage bis zum <span class="highlight">28. Juni 2026</span> zu.',
+      rem_4: 'Komm in bequemer Kleidung und mit viel Liebe <i data-lucide="heart" class="txt-ico heart-pink"></i>',
+      loc_title: "Ort",
+      loc_addr: "Volkspark Friedrichshain",
+      loc_ref: "In der Nähe vom Kiosk Neuer Hain",
+      loc_tram: "Tram M10: Paul-Heyse-Straße",
+      loc_sub: "In Google Maps öffnen →",
+      gift_title: "Geschenk",
+      gift_line: "Deine Anwesenheit ist das schönste Geschenk!",
+      gift_sub: "Wenn du das Baby verwöhnen möchtest, haben wir eine Amazon-Wunschliste und einen PayPal-Pool erstellt.",
+      gift_btn: "Amazon-Wunschliste ansehen →",
+      gift_btn2: "Über PayPal beitragen →",
+      rsvp_h: "Bist du dabei?",
+      rsvp_p: "Sag zu und sei Teil dieses besonderen Tages.",
+      rsvp_btn: "Jetzt zusagen \u{1F44B}",
+      rsvp_deadline: "✨ Zusagen bis <strong>28. Juni 2026</strong>"
+    }
+  };
+
+  function applyLang(lang) {
+    const dict = I18N[lang] || I18N.pt;
+    document.documentElement.lang = dict._htmlLang;
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      const key = el.getAttribute("data-i18n");
+      if (dict[key] != null) el.innerHTML = dict[key];
+    });
+    document.querySelectorAll("#lang button").forEach(function (b) {
+      b.classList.toggle("active", b.getAttribute("data-lang") === lang);
+    });
+    if (window.lucide) lucide.createIcons();
+    try { localStorage.setItem("bs_lang", lang); } catch (e) {}
+  }
+
+  (function initLang() {
+    let saved = null;
+    try { saved = localStorage.getItem("bs_lang"); } catch (e) {}
+
+    function detectBrowserLang() {
+      const prefs = (navigator.languages && navigator.languages.length)
+        ? navigator.languages
+        : [navigator.language || ""];
+      for (let i = 0; i < prefs.length; i++) {
+        const code = prefs[i].slice(0, 2).toLowerCase();
+        if (I18N[code]) return code;
+      }
+      return "en"; // default
+    }
+
+    const initial = (saved && I18N[saved]) ? saved : detectBrowserLang();
+    document.querySelectorAll("#lang button").forEach(function (b) {
+      b.addEventListener("click", function () { applyLang(b.getAttribute("data-lang")); });
+    });
+    applyLang(initial);
+  })();
+
+  // ---- floating decorative line icons ----
+  (function () {
+    const icons = ["rabbit", "baby", "sun", "flower-2", "heart", "star", "cloud", "sparkles"];
+    const colors = ["#b3c29c", "#e8c6a8", "#eed98f", "#e8c2bc", "#bdc9a6"];
+    const layer = document.getElementById("floaties");
+    for (let i = 0; i < 14; i++) {
+      const el = document.createElement("div");
+      el.className = "floatie";
+      el.innerHTML = '<i data-lucide="' + icons[i % icons.length] + '"></i>';
+      el.style.left = Math.random() * 100 + "vw";
+      el.style.top = Math.random() * 100 + "vh";
+      el.style.animationDuration = (5 + Math.random() * 6).toFixed(1) + "s";
+      el.style.animationDelay = (Math.random() * 4).toFixed(1) + "s";
+      el.style.fontSize = (1.6 + Math.random() * 2).toFixed(1) + "rem";
+      el.style.color = colors[i % colors.length];
+      el.style.opacity = (0.22 + Math.random() * 0.2).toFixed(2);
+      layer.appendChild(el);
+    }
+    if (window.lucide) lucide.createIcons();
+  })();
+
+  // ---- countdown to July 5, 2026, 15:00 (local time) ----
+  (function () {
+    const target = new Date(2026, 6, 5, 15, 0, 0).getTime();
+    const els = {
+      days: document.getElementById("cd-days"),
+      hours: document.getElementById("cd-hours"),
+      mins: document.getElementById("cd-mins"),
+      secs: document.getElementById("cd-secs"),
+    };
+    function pad(n) { return String(n).padStart(2, "0"); }
+    function tick() {
+      const diff = target - Date.now();
+      if (diff <= 0) {
+        els.days.textContent = els.hours.textContent = els.mins.textContent = els.secs.textContent = "00";
+        return;
+      }
+      els.days.textContent = Math.floor(diff / 86400000);
+      els.hours.textContent = pad(Math.floor((diff % 86400000) / 3600000));
+      els.mins.textContent = pad(Math.floor((diff % 3600000) / 60000));
+      els.secs.textContent = pad(Math.floor((diff % 60000) / 1000));
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+
+  // ---- scroll reveal ----
+  (function () {
+    const obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) e.target.classList.add("in"); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".reveal").forEach(function (el) { obs.observe(el); });
+  })();
+
+  // ---- confetti burst on RSVP click ----
+  (function () {
+    const btn = document.getElementById("rsvp-btn");
+    btn.addEventListener("click", function (ev) {
+      const colors = ["#9aa982", "#e6b99a", "#f4cf6a", "#e7b6b0", "#7d8d68"];
+      for (let i = 0; i < 60; i++) {
+        const c = document.createElement("div");
+        c.style.position = "fixed";
+        c.style.left = ev.clientX + "px";
+        c.style.top = ev.clientY + "px";
+        c.style.width = "10px";
+        c.style.height = "10px";
+        c.style.background = colors[i % colors.length];
+        c.style.borderRadius = Math.random() > .5 ? "50%" : "2px";
+        c.style.pointerEvents = "none";
+        c.style.zIndex = 9999;
+        document.body.appendChild(c);
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 4 + Math.random() * 6;
+        let vx = Math.cos(angle) * velocity;
+        let vy = Math.sin(angle) * velocity - 6;
+        let x = 0, y = 0, op = 1;
+        const id = setInterval(function () {
+          vy += 0.35;
+          x += vx; y += vy; op -= 0.018;
+          c.style.transform = "translate(" + x + "px," + y + "px) rotate(" + (x * 4) + "deg)";
+          c.style.opacity = op;
+          if (op <= 0) { clearInterval(id); c.remove(); }
+        }, 16);
+      }
+    });
+  })();
+</script>
+</body>
+</html>
