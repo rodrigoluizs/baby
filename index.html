@@ -193,13 +193,6 @@
   .hero-animals span:nth-child(4){ animation-delay:1.2s; }
   @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
 
-  .scroll-hint {
-    position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
-    color: var(--ink-soft); font-size: .85rem; letter-spacing: .2em; text-transform: uppercase;
-    animation: bob 2s ease-in-out infinite;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .scroll-ico { width: 18px; height: 18px; }
 
   /* DATE + COUNTDOWN */
   .date-card {
@@ -403,7 +396,6 @@
     <span><i data-lucide="sun"></i></span>
   </div>
 
-  <div class="scroll-hint" data-i18n="scroll"></div>
 </header>
 
 <div class="wrap">
@@ -510,7 +502,6 @@
       title: "Chá de Bebê",
       babyname: "Nico ou Luna",
       subtitle: 'Venha celebrar com a gente esse momento tão especial <i data-lucide="heart" class="txt-ico heart-pink"></i>',
-      scroll: 'role para baixo <i data-lucide="chevron-down" class="scroll-ico"></i>',
       when: "Domingo, das 15h às 19h",
       cd_days: "dias", cd_hours: "horas", cd_mins: "min", cd_secs: "seg",
       info_title: "Tudo que você precisa saber",
@@ -545,7 +536,6 @@
       title: "Baby Shower",
       babyname: "Nico or Luna",
       subtitle: 'Come celebrate this special moment with us <i data-lucide="heart" class="txt-ico heart-pink"></i>',
-      scroll: 'scroll down <i data-lucide="chevron-down" class="scroll-ico"></i>',
       when: "Sunday, 3–7 PM",
       cd_days: "days", cd_hours: "hours", cd_mins: "min", cd_secs: "sec",
       info_title: "Everything you need to know",
@@ -580,7 +570,6 @@
       title: "Babyparty",
       babyname: "Nico oder Luna",
       subtitle: 'Feiere diesen besonderen Moment mit uns <i data-lucide="heart" class="txt-ico heart-pink"></i>',
-      scroll: 'nach unten scrollen <i data-lucide="chevron-down" class="scroll-ico"></i>',
       when: "Sonntag, 15–19 Uhr",
       cd_days: "Tage", cd_hours: "Std", cd_mins: "Min", cd_secs: "Sek",
       info_title: "Alles, was du wissen musst",
