@@ -578,7 +578,7 @@
   <nav class="topnav" aria-label="Seções">
     <a href="#localizacao" data-i18n="nav_loc"></a>
     <a href="#presente" data-i18n="nav_gift"></a>
-    <a href="#bolao" data-i18n="nav_pool" data-pool-ui hidden></a>
+    <a href="#baby-pool" data-i18n="nav_pool" data-pool-ui hidden></a>
     <a href="#rsvp" class="topnav-cta" data-i18n="nav_rsvp"></a>
   </nav>
   <nav class="lang" id="lang" aria-label="Idioma / Language / Sprache">
@@ -647,7 +647,7 @@
         <p data-i18n="c3_desc"></p>
         <span class="cta" data-i18n="c3_cta"></span>
       </a>
-      <a class="card" href="#bolao" data-pool-ui hidden>
+      <a class="card" href="#baby-pool" data-pool-ui hidden>
         <div class="ico ico-pink"><i data-lucide="dices"></i></div>
         <h3 data-i18n="c4_title"></h3>
         <p data-i18n="c4_desc"></p>
@@ -708,7 +708,7 @@
 
 </div>
 
-<div id="bolao" class="pool-page" hidden>
+<div id="baby-pool" class="pool-page" hidden>
   <div class="pool-wrap">
     <div class="pool-head">
       <button class="pool-exit" id="pool-exit" data-i18n="pool_exit"></button>
@@ -1121,10 +1121,10 @@
     document.querySelectorAll("[data-pool-ui]").forEach(function (el) { el.removeAttribute("hidden"); });
     document.querySelector(".cards").classList.add("has-pool");
 
-    // full-screen page routed by #bolao, so the browser/phone back button closes it
-    const pool = document.getElementById("bolao");
+    // full-screen page routed by #baby-pool, so the browser/phone back button closes it
+    const pool = document.getElementById("baby-pool");
     function syncRoute() {
-      const open = location.hash === "#bolao";
+      const open = location.hash === "#baby-pool";
       pool.hidden = !open;
       document.body.classList.toggle("pool-open", open);
     }
