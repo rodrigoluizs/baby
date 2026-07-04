@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" translate="no">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- the site ships PT/EN/DE natively; browser auto-translate rewrites the DOM and corrupts the labels -->
+<meta name="google" content="notranslate" />
 <title>Baby Shower Nico/Luna</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%239aa982'/><path transform='translate(4 4)' d='M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z' fill='%23ffffff'/></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -463,6 +465,7 @@
   .pool-ico-peach { color: var(--peach); }
   .pool-ico-sage { color: var(--sage-deep); }
   .pool-ico-brown { color: #a3785a; }
+  .pool-ico-black { color: #55524b; }
   .pool-star { width: 15px; height: 15px; stroke-width: 2; color: #e6b94c; fill: #e6b94c; vertical-align: -2px; display: inline-block; }
   .ico-gold { color: #e6b94c; }
   .ico-party { color: var(--peach); }
@@ -507,11 +510,16 @@
   .pool-sub { color: var(--ink-soft); font-weight: 600; margin-bottom: 20px; }
   .pool-stats { display: grid; gap: 22px; max-width: 520px; margin: 0 auto; text-align: left; }
   .pool-stat h4 { font-size: .95rem; color: var(--sage-deep); margin-bottom: 8px; }
-  .pool-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; font-size: .9rem; }
-  .pool-bar-lbl { flex: 0 0 108px; font-weight: 600; color: var(--ink); }
-  .pool-bar-track { flex: 1; height: 14px; border-radius: 999px; background: rgba(120,110,90,.14); overflow: hidden; }
+  /* label column sizes to the longest label per category; the bar shrinks with the screen */
+  .pool-bar-rows {
+    display: grid; grid-template-columns: max-content minmax(40px, 1fr) max-content;
+    column-gap: 10px; row-gap: 8px; align-items: center; font-size: .9rem;
+  }
+  .pool-bar-row { display: contents; }
+  .pool-bar-lbl { font-weight: 600; color: var(--ink); white-space: nowrap; max-width: 55vw; overflow: hidden; text-overflow: ellipsis; }
+  .pool-bar-track { height: 14px; border-radius: 999px; background: rgba(120,110,90,.14); overflow: hidden; }
   .pool-bar-fill { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--sage), var(--sage-deep)); transition: width .6s ease; }
-  .pool-bar-pct { flex: 0 0 52px; text-align: right; font-weight: 700; color: var(--ink-soft); font-size: .85rem; }
+  .pool-bar-pct { text-align: right; font-weight: 700; color: var(--ink-soft); font-size: .85rem; }
   .pool-avgs { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
   .pool-avg-box {
     background: linear-gradient(180deg, #fff, #f7f3ea);
@@ -568,7 +576,8 @@
 
   @media (max-width: 640px) {
     .cards.has-pool { grid-template-columns: 1fr; }
-    .pool-bar-lbl { flex-basis: 86px; font-size: .82rem; }
+    .pool-bar-rows { font-size: .82rem; column-gap: 8px; }
+    .pool-bar-pct { font-size: .8rem; }
   }
 </style>
 </head>
@@ -790,6 +799,7 @@
       pool_hair_bald: "Careca", pool_hair_some: "Pouquinho", pool_hair_lots: "Cabeludo",
       pool_q_eyes: "Qual a cor dos olhos?",
       pool_eyes_blue: "Azuis", pool_eyes_brown: "Castanhos", pool_eyes_green: "Verdes",
+      pool_eyes_black: "Pretos",
       pool_tab_bet: "Apostar", pool_tab_results: "Resultados",
       pool_done_sub: "Sua aposta está registrada. Boa sorte!",
       pool_review_h: "Confira sua aposta",
@@ -874,6 +884,7 @@
       pool_hair_bald: "Bald", pool_hair_some: "A little", pool_hair_lots: "Full mane",
       pool_q_eyes: "What eye color?",
       pool_eyes_blue: "Blue", pool_eyes_brown: "Brown", pool_eyes_green: "Green",
+      pool_eyes_black: "Black",
       pool_tab_bet: "Bet", pool_tab_results: "Results",
       pool_done_sub: "Your bet is in. Good luck!",
       pool_review_h: "Review your bet",
@@ -958,6 +969,7 @@
       pool_hair_bald: "Glatze", pool_hair_some: "Ein bisschen", pool_hair_lots: "Volle Mähne",
       pool_q_eyes: "Welche Augenfarbe?",
       pool_eyes_blue: "Blau", pool_eyes_brown: "Braun", pool_eyes_green: "Grün",
+      pool_eyes_black: "Schwarz",
       pool_tab_bet: "Tippen", pool_tab_results: "Ergebnisse",
       pool_done_sub: "Dein Tipp ist gespeichert. Viel Glück!",
       pool_review_h: "Prüfe deinen Tipp",
@@ -986,7 +998,7 @@
     }
   };
 
-  function applyLang(lang) {
+  function applyLang(lang, persist) {
     const dict = I18N[lang] || I18N.pt;
     document.documentElement.lang = dict._htmlLang;
     if (dict.docTitle) document.title = dict.docTitle;
@@ -998,7 +1010,9 @@
       b.classList.toggle("active", b.getAttribute("data-lang") === lang);
     });
     if (window.lucide) lucide.createIcons();
-    try { localStorage.setItem("bs_lang", lang); } catch (e) {}
+    // only an explicit choice is remembered; auto-detection re-runs on every visit,
+    // so the site follows the device language until the user picks one
+    if (persist) { try { localStorage.setItem("bs_lang", lang); } catch (e) {} }
     window.CURRENT_LANG = lang;
     document.dispatchEvent(new CustomEvent("langchange"));
   }
@@ -1020,7 +1034,7 @@
 
     const initial = (saved && I18N[saved]) ? saved : detectBrowserLang();
     document.querySelectorAll(".lang button").forEach(function (b) {
-      b.addEventListener("click", function () { applyLang(b.getAttribute("data-lang")); });
+      b.addEventListener("click", function () { applyLang(b.getAttribute("data-lang"), true); });
     });
     applyLang(initial);
   })();
@@ -1154,10 +1168,11 @@
         options: [{ v: "bald", l: "pool_hair_bald", icon: "egg", color: "pool-ico-peach" },
                   { v: "some", l: "pool_hair_some", icon: "sprout", color: "pool-ico-sage" },
                   { v: "lots", l: "pool_hair_lots", icon: "tree-deciduous", color: "pool-ico-sage" }] },
-      { key: "eyes", type: "choice", q: "pool_q_eyes", cols3: true,
+      { key: "eyes", type: "choice", q: "pool_q_eyes",
         options: [{ v: "blue", l: "pool_eyes_blue", icon: "eye", color: "pool-ico-blue" },
                   { v: "brown", l: "pool_eyes_brown", icon: "eye", color: "pool-ico-brown" },
-                  { v: "green", l: "pool_eyes_green", icon: "eye", color: "pool-ico-sage" }] },
+                  { v: "green", l: "pool_eyes_green", icon: "eye", color: "pool-ico-sage" },
+                  { v: "black", l: "pool_eyes_black", icon: "eye", color: "pool-ico-black" }] },
     ];
     const POINTS = { sex: 2, dayNight: 1, hair: 2, eyes: 2, weekday: 3, week: 3 };
 
@@ -1450,6 +1465,7 @@
         ["sex", "week", "weekday", "dayNight", "hair", "eyes"].map(function (key) {
           const step = STEPS.find(function (s) { return s.key === key; });
           return '<div class="pool-stat"><h4>' + t("pool_cat_" + key) + "</h4>" +
+            '<div class="pool-bar-rows">' +
             step.options.map(function (o) {
               const count = bets.filter(function (b) { return b[key] === o.v; }).length;
               const pct = n ? Math.round(count / n * 100) : 0;
@@ -1457,7 +1473,7 @@
                 '<span class="pool-bar-lbl">' + displayVal(key, o.v) + "</span>" +
                 '<span class="pool-bar-track"><span class="pool-bar-fill" style="width:' + pct + '%"></span></span>' +
                 '<span class="pool-bar-pct">' + pct + "%</span></div>";
-            }).join("") + "</div>";
+            }).join("") + "</div></div>";
         }).join("") + "</div>";
 
       if (n) {

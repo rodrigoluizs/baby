@@ -47,7 +47,7 @@ Fill **row 2** of the `actual` sheet:
 | `weight_grams` | weight in grams                            | `3450`       |
 | `length_cm`    | length in cm                               | `51`         |
 | `hair`         | `bald`, `some` or `lots` (dropdown)        | `some`       |
-| `eyes`         | `blue`, `brown` or `green` (dropdown)      | `brown`      |
+| `eyes`         | `blue`, `brown`, `green` or `black` (dropdown) | `brown`  |
 
 Gestational week, weekday and day/night are derived automatically from the
 date and time. As soon as every column is filled, the site switches from the
