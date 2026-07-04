@@ -13,7 +13,7 @@ var SEX = ["boy", "girl"];
 var WEEKDAYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]; // index = Date.getDay()
 var DAY_NIGHT = ["day", "night"];
 var HAIR = ["bald", "some", "lots"];
-var EYES = ["blue", "brown", "green"];
+var EYES = ["blue", "brown", "green", "black"];
 var BETS_HEADERS = ["ts", "name", "sex", "week", "weekday", "dayNight", "weight", "length", "hair", "eyes", "lang"];
 var ACTUAL_HEADERS = ["sex", "birth_date", "birth_time", "weight_grams", "length_cm", "hair", "eyes"];
 
