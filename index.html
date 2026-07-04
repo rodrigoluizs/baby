@@ -1420,7 +1420,15 @@
         .then(function (res) {
           if (!res.ok) throw new Error("server error");
           state.data = res; state.rmode = "results";
-          if (state.tab === "results") render();
+          if (saved && !res.bets.some(function (b) { return b.name === saved.name; })) {
+            // the bet was removed from the sheet (admin cleanup): free this device to bet again
+            saved = null;
+            try { localStorage.removeItem("bs_pool_bet"); } catch (e) {}
+            if (state.mode === "done") state.mode = "intro";
+            render();
+          } else if (state.tab === "results") {
+            render();
+          }
         })
         .catch(function (err) {
           console.error("pool: loading results failed", err);
@@ -1535,6 +1543,7 @@
     if (saved && saved.name) {
       state.name = saved.name;
       state.mode = "done";
+      loadResults(); // also verifies the bet still exists in the sheet
     }
     render();
   })();
