@@ -238,6 +238,7 @@
 
   /* INFO CARDS */
   .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .cards.has-pool { grid-template-columns: repeat(2, 1fr); }
   .card {
     background: var(--card);
     backdrop-filter: blur(6px);
@@ -262,6 +263,7 @@
   .ico-sage  { background: linear-gradient(135deg, var(--sage), var(--sage-deep)); }
   .ico-peach { background: linear-gradient(135deg, var(--peach), #d99e78); }
   .ico-sun   { background: linear-gradient(135deg, #f6d77a, #e6b94c); }
+  .ico-pink  { background: linear-gradient(135deg, var(--pink), #d69a92); }
   .card h3 { margin: 12px 0 6px; font-size: 1.25rem; color: var(--sage-deep); }
   .card p { font-size: .95rem; color: var(--ink-soft); }
   .card .cta { display:inline-block; margin-top:12px; font-weight:700; color: var(--peach); }
@@ -357,6 +359,217 @@
   /* gentle entrance */
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
   .reveal.in { opacity: 1; transform: none; }
+
+  /* BETTING POOL */
+  [hidden] { display: none !important; }
+  body.pool-open { overflow: hidden; }
+  .pool-page {
+    position: fixed; inset: 0; z-index: 100;
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+    background:
+      radial-gradient(1200px 600px at 80% -5%, #fff7e6 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 20%, #eef2e6 0%, transparent 55%),
+      linear-gradient(180deg, var(--cream) 0%, var(--cream-2) 100%);
+  }
+  .pool-wrap { max-width: 680px; margin: 0 auto; padding: 16px 22px 60px; }
+  .pool-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .pool-page-title { margin: 14px 0 22px; }
+  .pool-exit {
+    border: 0; background: rgba(255,255,255,.6); cursor: pointer;
+    font-family: "Quicksand", sans-serif; font-weight: 700; font-size: .92rem;
+    color: var(--sage-deep); padding: 9px 16px; border-radius: 999px;
+    box-shadow: 0 8px 18px -12px rgba(120,110,90,.5);
+  }
+  .pool-exit:hover { background: #fff; }
+  .pool-card { text-align: center; }
+  .pool-intro-txt { color: var(--ink-soft); max-width: 46ch; margin: 0 auto 20px; }
+  .pool-name {
+    width: 100%; max-width: 340px;
+    font-family: "Quicksand", sans-serif; font-size: 1.1rem; font-weight: 600;
+    color: var(--ink); text-align: center;
+    padding: 14px 18px; margin-bottom: 16px;
+    border: 2px solid rgba(154, 169, 130, .45); border-radius: 16px;
+    background: #fff; outline: none;
+    transition: border-color .2s ease;
+  }
+  .pool-name:focus { border-color: var(--sage-deep); }
+  .pool-btn {
+    display: inline-block;
+    border: 0; cursor: pointer;
+    font-family: "Quicksand", sans-serif; font-weight: 700; font-size: 1.05rem;
+    background: var(--sage-deep); color: #fff;
+    padding: 14px 34px; border-radius: 999px;
+    box-shadow: 0 12px 24px -12px rgba(120,110,90,.6);
+    transition: transform .2s ease, opacity .2s ease;
+  }
+  .pool-btn:hover:not(:disabled) { transform: scale(1.05); }
+  .pool-btn:disabled { opacity: .55; cursor: default; }
+  .pool-btn-peach { background: linear-gradient(135deg, var(--peach), #d99e78); }
+  .pool-tabs {
+    display: flex; gap: 4px;
+    background: rgba(120,110,90,.08);
+    border-radius: 999px; padding: 4px;
+    max-width: 320px; margin: 0 auto 22px;
+  }
+  .pool-tab {
+    flex: 1; border: 0; background: transparent; cursor: pointer;
+    font-family: "Quicksand", sans-serif; font-weight: 700; font-size: .95rem;
+    color: var(--ink-soft); padding: 10px 12px; border-radius: 999px;
+    transition: all .2s ease;
+  }
+  .pool-tab:hover { color: var(--sage-deep); }
+  .pool-tab.active { background: var(--sage-deep); color: #fff; }
+
+  .pool-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; min-height: 34px; }
+  .pool-back {
+    border: 0; background: transparent; cursor: pointer;
+    font-family: "Quicksand", sans-serif; font-weight: 700; font-size: .95rem;
+    color: var(--sage-deep); padding: 6px 10px; border-radius: 999px;
+  }
+  .pool-back:hover { background: rgba(154,169,130,.15); }
+  .pool-count { font-size: .85rem; font-weight: 700; color: var(--ink-soft); letter-spacing: .08em; }
+  .pool-dots { display: flex; justify-content: center; gap: 8px; margin-bottom: 18px; }
+  .pool-dot {
+    width: 10px; height: 10px; border-radius: 50%; border: 0; padding: 0;
+    background: rgba(120,110,90,.22); cursor: default;
+  }
+  .pool-dot.done { background: var(--sage); cursor: pointer; }
+  .pool-dot.now { background: var(--sage-deep); transform: scale(1.35); }
+
+  .pool-q { font-size: clamp(1.25rem, 4.5vw, 1.6rem); font-weight: 700; color: var(--sage-deep); margin-bottom: 6px; }
+  .pool-note { font-size: .9rem; color: var(--ink-soft); margin-bottom: 16px; }
+  .pool-opts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 460px; margin: 14px auto 0; }
+  .pool-opts.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .pool-opts.cols-3 .pool-opt { font-size: .92rem; padding: 14px 4px; }
+  .pool-opt {
+    border: 2px solid rgba(154,169,130,.4); border-radius: 18px;
+    background: #fff; cursor: pointer;
+    font-family: "Quicksand", sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--ink);
+    padding: 16px 10px; min-height: 58px;
+    overflow-wrap: break-word;
+    transition: transform .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .pool-opt small { display: block; font-size: .78rem; font-weight: 600; color: var(--ink-soft); margin-top: 2px; }
+  .pool-opt:hover { border-color: var(--sage-deep); }
+  .pool-opt.sel { background: var(--sage-deep); border-color: var(--sage-deep); color: #fff; }
+  .pool-opt.sel small { color: rgba(255,255,255,.85); }
+  .pool-opt-ico { width: 24px; height: 24px; stroke-width: 2; display: block; margin: 0 auto 6px; }
+  .pool-opt.sel .pool-opt-ico { color: #fff !important; }
+  .pool-val-ico { width: 16px; height: 16px; stroke-width: 2.2; display: inline-block; vertical-align: -3px; margin-right: 5px; }
+  .pool-ico-blue { color: #7fa7cc; }
+  .pool-ico-pink { color: var(--pink); }
+  .pool-ico-sun { color: #e6b94c; }
+  .pool-ico-moon { color: #8a93b8; }
+  .pool-ico-peach { color: var(--peach); }
+  .pool-ico-sage { color: var(--sage-deep); }
+  .pool-ico-brown { color: #a3785a; }
+  .pool-star { width: 15px; height: 15px; stroke-width: 2; color: #e6b94c; fill: #e6b94c; vertical-align: -2px; display: inline-block; }
+  .ico-gold { color: #e6b94c; }
+  .ico-party { color: var(--peach); }
+
+  .pool-stepper { display: flex; align-items: center; justify-content: center; gap: 18px; margin: 22px 0 26px; }
+  .pool-step-btn {
+    width: 62px; height: 62px; border-radius: 50%; border: 0; cursor: pointer;
+    background: var(--sage-deep); color: #fff; font-size: 1.9rem; font-weight: 700; line-height: 1;
+    box-shadow: 0 10px 20px -10px rgba(120,110,90,.6);
+    transition: transform .15s ease, opacity .15s ease;
+    touch-action: manipulation;
+  }
+  .pool-step-btn:active { transform: scale(.92); }
+  .pool-step-btn:disabled { opacity: .35; cursor: default; }
+  .pool-step-val { font-size: clamp(2rem, 8vw, 2.8rem); font-weight: 700; color: var(--sage-deep); min-width: 150px; }
+  .pool-step-val small { font-size: .5em; color: var(--ink-soft); font-weight: 600; }
+
+  .pool-review { max-width: 460px; margin: 16px auto 20px; display: grid; gap: 10px; text-align: left; }
+  .pool-rrow {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    border: 2px solid rgba(154,169,130,.3); border-radius: 16px;
+    background: #fff; cursor: pointer;
+    font-family: "Quicksand", sans-serif;
+    padding: 12px 16px;
+    transition: border-color .15s ease;
+  }
+  .pool-rrow:hover { border-color: var(--sage-deep); }
+  .pool-rrow.ro { cursor: default; }
+  .pool-rrow.ro:hover { border-color: rgba(154,169,130,.3); }
+  .pool-rrow .k { font-size: .85rem; font-weight: 600; color: var(--ink-soft); }
+  .pool-rrow .v { font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+  .pool-rrow .v svg { width: 16px; height: 16px; color: var(--sage-deep); stroke-width: 2.4; }
+  .pool-err { color: #b0645c; font-weight: 600; margin: 12px 0; }
+  .pool-spin {
+    width: 34px; height: 34px; margin: 24px auto;
+    border: 4px solid rgba(154,169,130,.3); border-top-color: var(--sage-deep);
+    border-radius: 50%; animation: poolspin .8s linear infinite;
+  }
+  @keyframes poolspin { to { transform: rotate(360deg); } }
+
+  /* pool results */
+  .pool-sub { color: var(--ink-soft); font-weight: 600; margin-bottom: 20px; }
+  .pool-stats { display: grid; gap: 22px; max-width: 520px; margin: 0 auto; text-align: left; }
+  .pool-stat h4 { font-size: .95rem; color: var(--sage-deep); margin-bottom: 8px; }
+  .pool-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; font-size: .9rem; }
+  .pool-bar-lbl { flex: 0 0 108px; font-weight: 600; color: var(--ink); }
+  .pool-bar-track { flex: 1; height: 14px; border-radius: 999px; background: rgba(120,110,90,.14); overflow: hidden; }
+  .pool-bar-fill { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--sage), var(--sage-deep)); transition: width .6s ease; }
+  .pool-bar-pct { flex: 0 0 52px; text-align: right; font-weight: 700; color: var(--ink-soft); font-size: .85rem; }
+  .pool-avgs { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .pool-avg-box {
+    background: linear-gradient(180deg, #fff, #f7f3ea);
+    border-radius: 18px; padding: 14px 22px; min-width: 130px; text-align: center;
+    box-shadow: 0 10px 22px -14px rgba(120,110,90,.5);
+  }
+  .pool-avg-box .n { font-size: 1.5rem; font-weight: 700; color: var(--sage-deep); }
+  .pool-avg-box .l { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+
+  .pool-table-wrap { overflow-x: auto; margin-top: 14px; -webkit-overflow-scrolling: touch; }
+  .pool-table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: .85rem; text-align: left; }
+  .pool-table th {
+    font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--ink-soft); padding: 8px 10px; border-bottom: 2px solid rgba(120,110,90,.18);
+    white-space: nowrap;
+  }
+  .pool-table td { padding: 9px 10px; border-bottom: 1px solid rgba(120,110,90,.1); white-space: nowrap; }
+  .pool-table tr.me td { background: rgba(154,169,130,.16); font-weight: 700; }
+  /* keep the name readable while the table scrolls horizontally */
+  .pool-table th:first-child, .pool-table td:first-child {
+    position: sticky; left: 0; z-index: 2;
+    background: #faf8f2;
+    box-shadow: 4px 0 6px -4px rgba(120,110,90,.35);
+  }
+  .pool-table.ranked th:first-child, .pool-table.ranked td:first-child {
+    min-width: 44px; max-width: 44px; box-shadow: none;
+  }
+  .pool-table.ranked th:nth-child(2), .pool-table.ranked td:nth-child(2) {
+    position: sticky; left: 44px; z-index: 2;
+    background: #faf8f2;
+    box-shadow: 4px 0 6px -4px rgba(120,110,90,.35);
+  }
+  .pool-table tr.me td:first-child, .pool-table.ranked tr.me td:nth-child(2) { background: #eaebe0; }
+  .pool-table td.pts { font-weight: 700; color: var(--sage-deep); }
+  .pool-table td.zero { color: rgba(131,127,116,.55); }
+  .pool-you-badge {
+    display: inline-block; background: var(--sage-deep); color: #fff;
+    font-size: .68rem; font-weight: 700; border-radius: 999px; padding: 1px 8px; margin-left: 6px;
+    vertical-align: 1px;
+  }
+
+  /* leaderboard */
+  .pool-actual {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    margin: 6px 0 26px;
+  }
+  .pool-medal svg { width: 20px; height: 20px; stroke-width: 2.2; vertical-align: -4px; }
+  .pool-medal-1 { color: #e6b94c; }
+  .pool-medal-2 { color: #9aa4ad; }
+  .pool-medal-3 { color: #c08552; }
+  .pool-scoring { max-width: 520px; margin: 22px auto 0; text-align: left; }
+  .pool-scoring summary { cursor: pointer; font-weight: 700; color: var(--sage-deep); font-size: .95rem; }
+  .pool-scoring p { font-size: .88rem; color: var(--ink-soft); margin-top: 10px; }
+
+  @media (max-width: 640px) {
+    .cards.has-pool { grid-template-columns: 1fr; }
+    .pool-bar-lbl { flex-basis: 86px; font-size: .82rem; }
+  }
 </style>
 </head>
 <body>
@@ -365,6 +578,7 @@
   <nav class="topnav" aria-label="Seções">
     <a href="#localizacao" data-i18n="nav_loc"></a>
     <a href="#presente" data-i18n="nav_gift"></a>
+    <a href="#bolao" data-i18n="nav_pool" data-pool-ui hidden></a>
     <a href="#rsvp" class="topnav-cta" data-i18n="nav_rsvp"></a>
   </nav>
   <nav class="lang" id="lang" aria-label="Idioma / Language / Sprache">
@@ -433,6 +647,12 @@
         <p data-i18n="c3_desc"></p>
         <span class="cta" data-i18n="c3_cta"></span>
       </a>
+      <a class="card" href="#bolao" data-pool-ui hidden>
+        <div class="ico ico-pink"><i data-lucide="dices"></i></div>
+        <h3 data-i18n="c4_title"></h3>
+        <p data-i18n="c4_desc"></p>
+        <span class="cta" data-i18n="c4_cta"></span>
+      </a>
     </div>
   </section>
 
@@ -488,6 +708,23 @@
 
 </div>
 
+<div id="bolao" class="pool-page" hidden>
+  <div class="pool-wrap">
+    <div class="pool-head">
+      <button class="pool-exit" id="pool-exit" data-i18n="pool_exit"></button>
+      <nav class="lang" aria-label="Idioma / Language / Sprache">
+        <button data-lang="pt">PT</button>
+        <button data-lang="en">EN</button>
+        <button data-lang="de">DE</button>
+      </nav>
+    </div>
+    <h2 class="section-title pool-page-title" data-i18n="pool_title"></h2>
+    <div class="reminders pool-card">
+      <div id="pool-box"></div>
+    </div>
+  </div>
+</div>
+
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <script>
   // ---- render line icons ----
@@ -527,7 +764,57 @@
       rsvp_h: "Vem com a gente?",
       rsvp_p: "Confirme sua presença e faça parte desse dia especial.",
       rsvp_btn: "Confirmar presença \u{1F44B}",
-      rsvp_deadline: "✨ Confirme até <strong>28 de junho de 2026</strong>"
+      rsvp_deadline: "✨ Confirme até <strong>28 de junho de 2026</strong>",
+      nav_pool: "Bolão",
+      c4_title: "Bolão", c4_desc: "Aposte em como o bebê vai nascer", c4_cta: "Apostar →",
+      pool_title: "Bolão do Bebê",
+      pool_exit: "← Voltar ao site",
+      pool_intro: 'Quer brincar de adivinhar? Aposte em como o bebê vai chegar — quem acertar mais leva a glória <i data-lucide="trophy" class="txt-ico ico-gold"></i>',
+      pool_name_ph: "Seu nome",
+      pool_start: "Começar →",
+      pool_back: "← Voltar",
+      pool_ok: "Confirmar",
+      pool_q_sex: "Menino ou menina?",
+      pool_boy: "Menino", pool_girl: "Menina",
+      pool_q_week: "Com quantas semanas o bebê chega?",
+      pool_week_note: "Previsão: 7 de setembro de 2026 (semana 40)",
+      pool_q_weekday: "Em que dia da semana?",
+      pool_wd_mon: "Seg", pool_wd_tue: "Ter", pool_wd_wed: "Qua", pool_wd_thu: "Qui",
+      pool_wd_fri: "Sex", pool_wd_sat: "Sáb", pool_wd_sun: "Dom",
+      pool_q_dayNight: "De dia ou de noite?",
+      pool_day: "Dia", pool_day_sub: "6h – 18h",
+      pool_night: "Noite", pool_night_sub: "18h – 6h",
+      pool_q_weight: "Quanto vai pesar?",
+      pool_q_length: "Qual o comprimento?",
+      pool_q_hair: "E o cabelo?",
+      pool_hair_bald: "Careca", pool_hair_some: "Pouquinho", pool_hair_lots: "Cabeludo",
+      pool_q_eyes: "Qual a cor dos olhos?",
+      pool_eyes_blue: "Azuis", pool_eyes_brown: "Castanhos", pool_eyes_green: "Verdes",
+      pool_tab_bet: "Apostar", pool_tab_results: "Resultados",
+      pool_done_sub: "Sua aposta está registrada. Boa sorte!",
+      pool_review_h: "Confira sua aposta",
+      pool_review_sub: "Toque em um item para mudar. Depois de enviar não dá mais para voltar!",
+      pool_submit: 'Enviar aposta <i data-lucide="dices" class="txt-ico"></i>',
+      pool_sending: "Enviando...",
+      pool_submit_err: "Ops, não conseguimos enviar sua aposta.",
+      pool_retry: "Tentar de novo",
+      pool_success: 'Aposta registrada! <i data-lucide="party-popper" class="txt-ico ico-party"></i>',
+      pool_results_h: "Como estão as apostas",
+      pool_bets_one: "%1 aposta até agora", pool_bets_many: "%1 apostas até agora",
+      pool_avg_weight: "peso médio", pool_avg_length: "compr. médio",
+      pool_all_h: "Todas as apostas",
+      pool_you: "você",
+      pool_cat_sex: "Sexo", pool_cat_week: "Semanas", pool_cat_weekday: "Dia da semana",
+      pool_cat_dayNight: "Dia/Noite", pool_cat_weight: "Peso", pool_cat_length: "Comprimento",
+      pool_cat_hair: "Cabelo", pool_cat_eyes: "Olhos",
+      pool_loading: "Carregando...",
+      pool_load_err: "Não deu para carregar os resultados.",
+      pool_born_h: 'O bebê nasceu! <i data-lucide="party-popper" class="txt-ico ico-party"></i>',
+      pool_lb_h: "Ranking final",
+      pool_lb_sub: "Pontos por categoria — quem acertou mais?",
+      pool_name_col: "Nome", pool_total_col: "Total",
+      pool_scoring_h: "Como funciona a pontuação",
+      pool_scoring_txt: "Sexo: 2 pts · Dia/Noite: 1 pt · Cabelo: 2 pts · Olhos: 2 pts · Dia da semana: 3 pts · Semanas: 3 pts (semana vizinha: 1 pt) · Peso: ±100g → 4 / ±250g → 2 / ±500g → 1 · Comprimento: ±1cm → 4 / ±2cm → 2 / ±3cm → 1. Empate: quem apostou primeiro fica na frente."
     },
     en: {
       _htmlLang: "en",
@@ -561,7 +848,57 @@
       rsvp_h: "Will you join us?",
       rsvp_p: "RSVP and be part of this special day.",
       rsvp_btn: "RSVP now \u{1F44B}",
-      rsvp_deadline: "✨ RSVP by <strong>June 28, 2026</strong>"
+      rsvp_deadline: "✨ RSVP by <strong>June 28, 2026</strong>",
+      nav_pool: "Baby Pool",
+      c4_title: "Baby Pool", c4_desc: "Bet on how the baby will arrive", c4_cta: "Place your bet →",
+      pool_title: "Baby Pool",
+      pool_exit: "← Back to the site",
+      pool_intro: 'Fancy a guess? Bet on how the baby will arrive — whoever gets the most right takes the glory <i data-lucide="trophy" class="txt-ico ico-gold"></i>',
+      pool_name_ph: "Your name",
+      pool_start: "Start →",
+      pool_back: "← Back",
+      pool_ok: "Confirm",
+      pool_q_sex: "Boy or girl?",
+      pool_boy: "Boy", pool_girl: "Girl",
+      pool_q_week: "At how many weeks will the baby arrive?",
+      pool_week_note: "Due date: September 7, 2026 (week 40)",
+      pool_q_weekday: "On which day of the week?",
+      pool_wd_mon: "Mon", pool_wd_tue: "Tue", pool_wd_wed: "Wed", pool_wd_thu: "Thu",
+      pool_wd_fri: "Fri", pool_wd_sat: "Sat", pool_wd_sun: "Sun",
+      pool_q_dayNight: "During the day or at night?",
+      pool_day: "Day", pool_day_sub: "6 AM – 6 PM",
+      pool_night: "Night", pool_night_sub: "6 PM – 6 AM",
+      pool_q_weight: "How much will the baby weigh?",
+      pool_q_length: "How long will the baby be?",
+      pool_q_hair: "And the hair?",
+      pool_hair_bald: "Bald", pool_hair_some: "A little", pool_hair_lots: "Full mane",
+      pool_q_eyes: "What eye color?",
+      pool_eyes_blue: "Blue", pool_eyes_brown: "Brown", pool_eyes_green: "Green",
+      pool_tab_bet: "Bet", pool_tab_results: "Results",
+      pool_done_sub: "Your bet is in. Good luck!",
+      pool_review_h: "Review your bet",
+      pool_review_sub: "Tap an item to change it. Once submitted, there's no going back!",
+      pool_submit: 'Submit bet <i data-lucide="dices" class="txt-ico"></i>',
+      pool_sending: "Sending...",
+      pool_submit_err: "Oops, we couldn't submit your bet.",
+      pool_retry: "Try again",
+      pool_success: 'Bet placed! <i data-lucide="party-popper" class="txt-ico ico-party"></i>',
+      pool_results_h: "How everyone is betting",
+      pool_bets_one: "%1 bet so far", pool_bets_many: "%1 bets so far",
+      pool_avg_weight: "avg. weight", pool_avg_length: "avg. length",
+      pool_all_h: "All bets",
+      pool_you: "you",
+      pool_cat_sex: "Sex", pool_cat_week: "Weeks", pool_cat_weekday: "Weekday",
+      pool_cat_dayNight: "Day/Night", pool_cat_weight: "Weight", pool_cat_length: "Length",
+      pool_cat_hair: "Hair", pool_cat_eyes: "Eyes",
+      pool_loading: "Loading...",
+      pool_load_err: "Couldn't load the results.",
+      pool_born_h: 'The baby is here! <i data-lucide="party-popper" class="txt-ico ico-party"></i>',
+      pool_lb_h: "Final leaderboard",
+      pool_lb_sub: "Points per category — who guessed best?",
+      pool_name_col: "Name", pool_total_col: "Total",
+      pool_scoring_h: "How scoring works",
+      pool_scoring_txt: "Sex: 2 pts · Day/Night: 1 pt · Hair: 2 pts · Eyes: 2 pts · Weekday: 3 pts · Weeks: 3 pts (adjacent week: 1 pt) · Weight: ±100g → 4 / ±250g → 2 / ±500g → 1 · Length: ±1cm → 4 / ±2cm → 2 / ±3cm → 1. Ties: the earlier bet ranks higher."
     },
     de: {
       _htmlLang: "de",
@@ -595,7 +932,57 @@
       rsvp_h: "Bist du dabei?",
       rsvp_p: "Sag zu und sei Teil dieses besonderen Tages.",
       rsvp_btn: "Jetzt zusagen \u{1F44B}",
-      rsvp_deadline: "✨ Zusagen bis <strong>28. Juni 2026</strong>"
+      rsvp_deadline: "✨ Zusagen bis <strong>28. Juni 2026</strong>",
+      nav_pool: "Tippspiel",
+      c4_title: "Tippspiel", c4_desc: "Tippe, wie das Baby zur Welt kommt", c4_cta: "Jetzt tippen →",
+      pool_title: "Baby-Tippspiel",
+      pool_exit: "← Zurück zur Seite",
+      pool_intro: 'Lust zu raten? Tippe, wie das Baby zur Welt kommt — wer am besten liegt, gewinnt den Ruhm <i data-lucide="trophy" class="txt-ico ico-gold"></i>',
+      pool_name_ph: "Dein Name",
+      pool_start: "Los geht's →",
+      pool_back: "← Zurück",
+      pool_ok: "Bestätigen",
+      pool_q_sex: "Junge oder Mädchen?",
+      pool_boy: "Junge", pool_girl: "Mädchen",
+      pool_q_week: "In welcher Woche kommt das Baby?",
+      pool_week_note: "Errechneter Termin: 7. September 2026 (Woche 40)",
+      pool_q_weekday: "An welchem Wochentag?",
+      pool_wd_mon: "Mo", pool_wd_tue: "Di", pool_wd_wed: "Mi", pool_wd_thu: "Do",
+      pool_wd_fri: "Fr", pool_wd_sat: "Sa", pool_wd_sun: "So",
+      pool_q_dayNight: "Tagsüber oder nachts?",
+      pool_day: "Tag", pool_day_sub: "6 – 18 Uhr",
+      pool_night: "Nacht", pool_night_sub: "18 – 6 Uhr",
+      pool_q_weight: "Wie schwer wird das Baby?",
+      pool_q_length: "Wie groß wird das Baby?",
+      pool_q_hair: "Und die Haare?",
+      pool_hair_bald: "Glatze", pool_hair_some: "Ein bisschen", pool_hair_lots: "Volle Mähne",
+      pool_q_eyes: "Welche Augenfarbe?",
+      pool_eyes_blue: "Blau", pool_eyes_brown: "Braun", pool_eyes_green: "Grün",
+      pool_tab_bet: "Tippen", pool_tab_results: "Ergebnisse",
+      pool_done_sub: "Dein Tipp ist gespeichert. Viel Glück!",
+      pool_review_h: "Prüfe deinen Tipp",
+      pool_review_sub: "Tippe auf eine Zeile, um sie zu ändern. Nach dem Absenden gibt es kein Zurück!",
+      pool_submit: 'Tipp absenden <i data-lucide="dices" class="txt-ico"></i>',
+      pool_sending: "Wird gesendet...",
+      pool_submit_err: "Ups, dein Tipp konnte nicht gesendet werden.",
+      pool_retry: "Nochmal versuchen",
+      pool_success: 'Tipp gespeichert! <i data-lucide="party-popper" class="txt-ico ico-party"></i>',
+      pool_results_h: "So wird getippt",
+      pool_bets_one: "Bisher %1 Tipp", pool_bets_many: "Bisher %1 Tipps",
+      pool_avg_weight: "Ø Gewicht", pool_avg_length: "Ø Größe",
+      pool_all_h: "Alle Tipps",
+      pool_you: "du",
+      pool_cat_sex: "Geschlecht", pool_cat_week: "Wochen", pool_cat_weekday: "Wochentag",
+      pool_cat_dayNight: "Tag/Nacht", pool_cat_weight: "Gewicht", pool_cat_length: "Größe",
+      pool_cat_hair: "Haare", pool_cat_eyes: "Augen",
+      pool_loading: "Wird geladen...",
+      pool_load_err: "Die Ergebnisse konnten nicht geladen werden.",
+      pool_born_h: 'Das Baby ist da! <i data-lucide="party-popper" class="txt-ico ico-party"></i>',
+      pool_lb_h: "Endstand",
+      pool_lb_sub: "Punkte pro Kategorie — wer lag am besten?",
+      pool_name_col: "Name", pool_total_col: "Gesamt",
+      pool_scoring_h: "So wird gezählt",
+      pool_scoring_txt: "Geschlecht: 2 Pkt. · Tag/Nacht: 1 Pkt. · Haare: 2 Pkt. · Augen: 2 Pkt. · Wochentag: 3 Pkt. · Wochen: 3 Pkt. (Nachbarwoche: 1 Pkt.) · Gewicht: ±100 g → 4 / ±250 g → 2 / ±500 g → 1 · Größe: ±1 cm → 4 / ±2 cm → 2 / ±3 cm → 1. Gleichstand: der frühere Tipp liegt vorn."
     }
   };
 
@@ -607,11 +994,13 @@
       const key = el.getAttribute("data-i18n");
       if (dict[key] != null) el.innerHTML = dict[key];
     });
-    document.querySelectorAll("#lang button").forEach(function (b) {
+    document.querySelectorAll(".lang button").forEach(function (b) {
       b.classList.toggle("active", b.getAttribute("data-lang") === lang);
     });
     if (window.lucide) lucide.createIcons();
     try { localStorage.setItem("bs_lang", lang); } catch (e) {}
+    window.CURRENT_LANG = lang;
+    document.dispatchEvent(new CustomEvent("langchange"));
   }
 
   (function initLang() {
@@ -630,7 +1019,7 @@
     }
 
     const initial = (saved && I18N[saved]) ? saved : detectBrowserLang();
-    document.querySelectorAll("#lang button").forEach(function (b) {
+    document.querySelectorAll(".lang button").forEach(function (b) {
       b.addEventListener("click", function () { applyLang(b.getAttribute("data-lang")); });
     });
     applyLang(initial);
@@ -690,16 +1079,14 @@
     document.querySelectorAll(".reveal").forEach(function (el) { obs.observe(el); });
   })();
 
-  // ---- confetti burst on RSVP click ----
-  (function () {
-    const btn = document.getElementById("rsvp-btn");
-    btn.addEventListener("click", function (ev) {
-      const colors = ["#9aa982", "#e6b99a", "#f4cf6a", "#e7b6b0", "#7d8d68"];
-      for (let i = 0; i < 60; i++) {
+  // ---- confetti burst (RSVP click + pool submit) ----
+  function confettiBurst(x, y) {
+    const colors = ["#9aa982", "#e6b99a", "#f4cf6a", "#e7b6b0", "#7d8d68"];
+    for (let i = 0; i < 60; i++) {
         const c = document.createElement("div");
         c.style.position = "fixed";
-        c.style.left = ev.clientX + "px";
-        c.style.top = ev.clientY + "px";
+        c.style.left = x + "px";
+        c.style.top = y + "px";
         c.style.width = "10px";
         c.style.height = "10px";
         c.style.background = colors[i % colors.length];
@@ -711,16 +1098,429 @@
         const velocity = 4 + Math.random() * 6;
         let vx = Math.cos(angle) * velocity;
         let vy = Math.sin(angle) * velocity - 6;
-        let x = 0, y = 0, op = 1;
+        let px = 0, py = 0, op = 1;
         const id = setInterval(function () {
           vy += 0.35;
-          x += vx; y += vy; op -= 0.018;
-          c.style.transform = "translate(" + x + "px," + y + "px) rotate(" + (x * 4) + "deg)";
+          px += vx; py += vy; op -= 0.018;
+          c.style.transform = "translate(" + px + "px," + py + "px) rotate(" + (px * 4) + "deg)";
           c.style.opacity = op;
           if (op <= 0) { clearInterval(id); c.remove(); }
         }, 16);
       }
+  }
+  document.getElementById("rsvp-btn").addEventListener("click", function (ev) {
+    confettiBurst(ev.clientX, ev.clientY);
+  });
+
+  // ---- baby betting pool ----
+  (function () {
+    // Apps Script Web App URL — see apps-script/README.md. Empty = feature hidden.
+    const POOL_URL = "https://script.google.com/macros/s/AKfycbxLsXB5s_jryfEhhk4Es4xPL6Emuwq0cjuUiKJGcJHTPeIeZzF7NLQVnxV3WU5eR1MW/exec";
+    if (!POOL_URL) return;
+
+    document.querySelectorAll("[data-pool-ui]").forEach(function (el) { el.removeAttribute("hidden"); });
+    document.querySelector(".cards").classList.add("has-pool");
+
+    // full-screen page routed by #bolao, so the browser/phone back button closes it
+    const pool = document.getElementById("bolao");
+    function syncRoute() {
+      const open = location.hash === "#bolao";
+      pool.hidden = !open;
+      document.body.classList.toggle("pool-open", open);
+    }
+    window.addEventListener("hashchange", syncRoute);
+    document.getElementById("pool-exit").addEventListener("click", function () {
+      if (history.length > 1) history.back(); else location.hash = "";
     });
+    syncRoute();
+
+    const box = document.getElementById("pool-box");
+    const WEEKDAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+    const STEPS = [
+      { key: "sex", type: "choice", q: "pool_q_sex",
+        options: [{ v: "boy", l: "pool_boy", icon: "mars", color: "pool-ico-blue" },
+                  { v: "girl", l: "pool_girl", icon: "venus", color: "pool-ico-pink" }] },
+      { key: "week", type: "choice", q: "pool_q_week", note: "pool_week_note", cols3: true,
+        options: [{ v: 37, raw: "≤ 37" }, { v: 38, raw: "38" }, { v: 39, raw: "39" },
+                  { v: 40, raw: '40 <i data-lucide="star" class="pool-star"></i>' }, { v: 41, raw: "41" }, { v: 42, raw: "42+" }] },
+      { key: "weekday", type: "choice", q: "pool_q_weekday", cols3: true,
+        options: WEEKDAYS.map(function (d) { return { v: d, l: "pool_wd_" + d }; }) },
+      { key: "dayNight", type: "choice", q: "pool_q_dayNight",
+        options: [{ v: "day", l: "pool_day", sub: "pool_day_sub", icon: "sun", color: "pool-ico-sun" },
+                  { v: "night", l: "pool_night", sub: "pool_night_sub", icon: "moon", color: "pool-ico-moon" }] },
+      { key: "weight", type: "stepper", q: "pool_q_weight", min: 2500, max: 4500, step: 50, def: 3300, fmt: fmtWeight },
+      { key: "length", type: "stepper", q: "pool_q_length", min: 44, max: 56, step: 1, def: 50, fmt: fmtLength },
+      { key: "hair", type: "choice", q: "pool_q_hair", cols3: true,
+        options: [{ v: "bald", l: "pool_hair_bald", icon: "egg", color: "pool-ico-peach" },
+                  { v: "some", l: "pool_hair_some", icon: "sprout", color: "pool-ico-sage" },
+                  { v: "lots", l: "pool_hair_lots", icon: "tree-deciduous", color: "pool-ico-sage" }] },
+      { key: "eyes", type: "choice", q: "pool_q_eyes", cols3: true,
+        options: [{ v: "blue", l: "pool_eyes_blue", icon: "eye", color: "pool-ico-blue" },
+                  { v: "brown", l: "pool_eyes_brown", icon: "eye", color: "pool-ico-brown" },
+                  { v: "green", l: "pool_eyes_green", icon: "eye", color: "pool-ico-sage" }] },
+    ];
+    const POINTS = { sex: 2, dayNight: 1, hair: 2, eyes: 2, weekday: 3, week: 3 };
+
+    // tab "bet" runs modes intro→step→review→sending→done; tab "results" runs rmode loading→results/loaderr
+    const state = { tab: "bet", mode: "intro", rmode: "loading", step: 0, fromReview: false, name: "", answers: {}, data: null, err: false };
+    let saved = null;
+    try { saved = JSON.parse(localStorage.getItem("bs_pool_bet") || "null"); } catch (e) {}
+
+    function t(key) { return (I18N[window.CURRENT_LANG] || I18N.pt)[key] || key; }
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+    function fmtWeight(g) {
+      const sep = window.CURRENT_LANG === "en" ? "." : ",";
+      return (g / 1000).toFixed(3).replace(".", sep) + " kg";
+    }
+    function fmtLength(cm) { return cm + " cm"; }
+    function displayVal(key, v) {
+      const step = STEPS.find(function (s) { return s.key === key; });
+      if (step.type === "stepper") return step.fmt(v);
+      const o = step.options.find(function (o) { return o.v === v; });
+      if (!o) return String(v);
+      return (o.icon ? '<i data-lucide="' + o.icon + '" class="pool-val-ico ' + o.color + '"></i>' : "") +
+        (o.raw || t(o.l));
+    }
+
+    function render() {
+      if (state.tab === "bet") {
+        ({ intro: renderIntro, step: renderStep, review: renderReview,
+           sending: renderSending, done: renderDone })[state.mode]();
+      } else {
+        ({ loading: renderLoading, results: renderResults, loaderr: renderLoadErr })[state.rmode]();
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function tabsHtml() {
+      return '<div class="pool-tabs">' +
+        '<button class="pool-tab' + (state.tab === "bet" ? " active" : "") + '" data-tab="bet">' + t("pool_tab_bet") + "</button>" +
+        '<button class="pool-tab' + (state.tab === "results" ? " active" : "") + '" data-tab="results">' + t("pool_tab_results") + "</button>" +
+        "</div>";
+    }
+
+    function setContent(html) {
+      box.innerHTML = tabsHtml() + html;
+      box.querySelectorAll(".pool-tab").forEach(function (b) {
+        b.addEventListener("click", function () {
+          const tab = b.getAttribute("data-tab");
+          if (tab === state.tab) return;
+          state.tab = tab;
+          if (tab === "results" && !state.data) { state.rmode = "loading"; loadResults(); }
+          render();
+        });
+      });
+    }
+
+    // ---- wizard screens ----
+    function renderIntro() {
+      setContent(
+        '<p class="pool-intro-txt">' + t("pool_intro") + "</p>" +
+        '<div><input class="pool-name" id="pool-name" maxlength="60" autocomplete="name" placeholder="' + t("pool_name_ph") + '" value="' + esc(state.name) + '"></div>' +
+        '<button class="pool-btn" id="pool-start"' + (state.name.trim() ? "" : " disabled") + ">" + t("pool_start") + "</button>");
+      const input = document.getElementById("pool-name");
+      const start = document.getElementById("pool-start");
+      input.addEventListener("input", function () {
+        state.name = input.value;
+        start.disabled = !state.name.trim();
+      });
+      input.addEventListener("keydown", function (ev) { if (ev.key === "Enter" && state.name.trim()) go(); });
+      start.addEventListener("click", go);
+      function go() {
+        state.name = state.name.trim();
+        state.mode = "step"; state.step = 0; state.fromReview = false;
+        render();
+      }
+    }
+
+    function topBarHtml() {
+      return '<div class="pool-top">' +
+        '<button class="pool-back" id="pool-back">' + t("pool_back") + "</button>" +
+        '<span class="pool-count">' + (state.step + 1) + " / " + STEPS.length + "</span>" +
+        "</div>" +
+        '<div class="pool-dots">' + STEPS.map(function (s, i) {
+          const cls = i === state.step ? "now" : (state.answers[s.key] != null ? "done" : "");
+          return '<button class="pool-dot ' + cls + '" data-dot="' + i + '"' + (cls ? "" : " disabled") + "></button>";
+        }).join("") + "</div>";
+    }
+
+    function wireTopBar() {
+      document.getElementById("pool-back").addEventListener("click", function () {
+        if (state.fromReview) { state.mode = "review"; }
+        else if (state.step === 0) { state.mode = "intro"; }
+        else { state.step--; }
+        render();
+      });
+      box.querySelectorAll("[data-dot]").forEach(function (d) {
+        d.addEventListener("click", function () {
+          const i = Number(d.getAttribute("data-dot"));
+          if (i !== state.step && state.answers[STEPS[i].key] != null) {
+            state.step = i; state.fromReview = false; render();
+          }
+        });
+      });
+    }
+
+    function advance() {
+      if (state.fromReview) { state.mode = "review"; state.fromReview = false; }
+      else if (state.step < STEPS.length - 1) { state.step++; }
+      else { state.mode = "review"; }
+      render();
+    }
+
+    function renderStep() {
+      const step = STEPS[state.step];
+      let html = topBarHtml() +
+        '<p class="pool-q">' + t(step.q) + "</p>" +
+        (step.note ? '<p class="pool-note">' + t(step.note) + "</p>" : "");
+
+      if (step.type === "choice") {
+        html += '<div class="pool-opts' + (step.cols3 ? " cols-3" : "") + '">' +
+          step.options.map(function (o) {
+            const sel = state.answers[step.key] === o.v ? " sel" : "";
+            return '<button class="pool-opt' + sel + '" data-v="' + o.v + '">' +
+              (o.icon ? '<i data-lucide="' + o.icon + '" class="pool-opt-ico ' + o.color + '"></i>' : "") +
+              (o.raw || t(o.l)) + (o.sub ? "<small>" + t(o.sub) + "</small>" : "") +
+              "</button>";
+          }).join("") + "</div>";
+        setContent(html);
+        wireTopBar();
+        box.querySelectorAll(".pool-opt").forEach(function (btn, idx) {
+          btn.addEventListener("click", function () {
+            state.answers[step.key] = step.options[idx].v;
+            box.querySelectorAll(".pool-opt").forEach(function (b) { b.classList.remove("sel"); });
+            btn.classList.add("sel");
+            setTimeout(advance, 220);
+          });
+        });
+      } else {
+        if (state.answers[step.key] == null) state.answers[step.key] = step.def;
+        html += '<div class="pool-stepper">' +
+          '<button class="pool-step-btn" id="pool-minus">−</button>' +
+          '<div class="pool-step-val" id="pool-val"></div>' +
+          '<button class="pool-step-btn" id="pool-plus">+</button>' +
+          "</div>" +
+          '<button class="pool-btn" id="pool-next">' + t("pool_ok") + "</button>";
+        setContent(html);
+        wireTopBar();
+        const minus = document.getElementById("pool-minus");
+        const plus = document.getElementById("pool-plus");
+        function refresh() {
+          document.getElementById("pool-val").textContent = step.fmt(state.answers[step.key]);
+          minus.disabled = state.answers[step.key] <= step.min;
+          plus.disabled = state.answers[step.key] >= step.max;
+        }
+        minus.addEventListener("click", function () {
+          state.answers[step.key] = Math.max(step.min, state.answers[step.key] - step.step); refresh();
+        });
+        plus.addEventListener("click", function () {
+          state.answers[step.key] = Math.min(step.max, state.answers[step.key] + step.step); refresh();
+        });
+        document.getElementById("pool-next").addEventListener("click", advance);
+        refresh();
+      }
+    }
+
+    function renderReview() {
+      setContent(
+        '<p class="pool-q">' + t("pool_review_h") + "</p>" +
+        '<p class="pool-note">' + t("pool_review_sub") + "</p>" +
+        '<div class="pool-review">' +
+        '<div class="pool-rrow" data-edit="name"><span class="k">' + t("pool_name_col") + '</span><span class="v">' + esc(state.name) + ' <i data-lucide="pencil"></i></span></div>' +
+        STEPS.map(function (s, i) {
+          return '<div class="pool-rrow" data-edit="' + i + '"><span class="k">' + t("pool_cat_" + s.key) + '</span>' +
+            '<span class="v">' + displayVal(s.key, state.answers[s.key]) + ' <i data-lucide="pencil"></i></span></div>';
+        }).join("") +
+        "</div>" +
+        (state.err ? '<p class="pool-err">' + t("pool_submit_err") + "</p>" : "") +
+        '<button class="pool-btn pool-btn-peach" id="pool-submit">' + t(state.err ? "pool_retry" : "pool_submit") + "</button>");
+      box.querySelectorAll("[data-edit]").forEach(function (row) {
+        row.addEventListener("click", function () {
+          const target = row.getAttribute("data-edit");
+          if (target === "name") { state.mode = "intro"; }
+          else { state.mode = "step"; state.step = Number(target); state.fromReview = true; }
+          render();
+        });
+      });
+      document.getElementById("pool-submit").addEventListener("click", submit);
+    }
+
+    function renderSending() {
+      setContent('<div class="pool-spin"></div><p class="pool-sub">' + t("pool_sending") + "</p>");
+    }
+
+    function renderDone() {
+      setContent(
+        '<p class="pool-q">' + t("pool_success") + "</p>" +
+        '<p class="pool-note">' + t("pool_done_sub") + "</p>" +
+        '<div class="pool-review">' +
+        '<div class="pool-rrow ro"><span class="k">' + t("pool_name_col") + '</span><span class="v">' + esc(saved.name) + "</span></div>" +
+        STEPS.map(function (s) {
+          return '<div class="pool-rrow ro"><span class="k">' + t("pool_cat_" + s.key) + '</span>' +
+            '<span class="v">' + displayVal(s.key, saved.bet[s.key]) + "</span></div>";
+        }).join("") + "</div>");
+    }
+
+    function renderLoading() {
+      setContent('<div class="pool-spin"></div><p class="pool-sub">' + t("pool_loading") + "</p>");
+    }
+
+    function renderLoadErr() {
+      setContent('<p class="pool-err">' + t("pool_load_err") + "</p>" +
+        '<button class="pool-btn" id="pool-reload">' + t("pool_retry") + "</button>");
+      document.getElementById("pool-reload").addEventListener("click", function () {
+        state.rmode = "loading"; render(); loadResults();
+      });
+    }
+
+    // ---- submit & load ----
+    function submit() {
+      state.mode = "sending"; state.err = false; render();
+      const payload = Object.assign({ name: state.name, lang: window.CURRENT_LANG }, state.answers);
+      fetch(POOL_URL, { method: "POST", body: JSON.stringify(payload) })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          if (!res.ok) throw new Error(res.error || "server error");
+          saved = { name: state.name, bet: state.answers, ts: Date.now() };
+          try { localStorage.setItem("bs_pool_bet", JSON.stringify(saved)); } catch (e) {}
+          const r = box.getBoundingClientRect();
+          confettiBurst(r.left + r.width / 2, Math.max(90, r.top + 60));
+          state.mode = "done";
+          state.tab = "results"; state.rmode = "loading";
+          render(); loadResults();
+        })
+        .catch(function (err) {
+          console.error("pool: submit failed", err);
+          state.mode = "review"; state.err = true; render();
+        });
+    }
+
+    function loadResults() {
+      fetch(POOL_URL)
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          if (!res.ok) throw new Error("server error");
+          state.data = res; state.rmode = "results";
+          if (state.tab === "results") render();
+        })
+        .catch(function (err) {
+          console.error("pool: loading results failed", err);
+          state.rmode = "loaderr";
+          if (state.tab === "results") render();
+        });
+    }
+
+    // ---- results & leaderboard ----
+    function scoreBet(bet, actual) {
+      const s = {
+        sex: bet.sex === actual.sex ? POINTS.sex : 0,
+        dayNight: bet.dayNight === actual.dayNight ? POINTS.dayNight : 0,
+        hair: bet.hair === actual.hair ? POINTS.hair : 0,
+        eyes: bet.eyes === actual.eyes ? POINTS.eyes : 0,
+        weekday: bet.weekday === actual.weekday ? POINTS.weekday : 0,
+      };
+      const wd = Math.abs(bet.week - actual.week);
+      s.week = wd === 0 ? POINTS.week : (wd === 1 ? 1 : 0);
+      const gd = Math.abs(bet.weight - actual.weight);
+      s.weight = gd <= 100 ? 4 : (gd <= 250 ? 2 : (gd <= 500 ? 1 : 0));
+      const ld = Math.abs(bet.length - actual.length);
+      s.length = ld <= 1 ? 4 : (ld <= 2 ? 2 : (ld <= 3 ? 1 : 0));
+      s.total = s.sex + s.dayNight + s.hair + s.eyes + s.weekday + s.week + s.weight + s.length;
+      return s;
+    }
+
+    function isMe(bet) { return saved && bet.name === saved.name; }
+
+    function nameCell(bet) {
+      return esc(bet.name) + (isMe(bet) ? '<span class="pool-you-badge">' + t("pool_you") + "</span>" : "");
+    }
+
+    function renderResults() {
+      if (state.data.actual) { renderLeaderboard(); return; }
+      const bets = state.data.bets;
+      const n = bets.length;
+      let html = '<p class="pool-q">' + t("pool_results_h") + "</p>" +
+        '<p class="pool-sub">' + t(n === 1 ? "pool_bets_one" : "pool_bets_many").replace("%1", n) + "</p>";
+
+      html += '<div class="pool-stats">' +
+        ["sex", "week", "weekday", "dayNight", "hair", "eyes"].map(function (key) {
+          const step = STEPS.find(function (s) { return s.key === key; });
+          return '<div class="pool-stat"><h4>' + t("pool_cat_" + key) + "</h4>" +
+            step.options.map(function (o) {
+              const count = bets.filter(function (b) { return b[key] === o.v; }).length;
+              const pct = n ? Math.round(count / n * 100) : 0;
+              return '<div class="pool-bar-row">' +
+                '<span class="pool-bar-lbl">' + displayVal(key, o.v) + "</span>" +
+                '<span class="pool-bar-track"><span class="pool-bar-fill" style="width:' + pct + '%"></span></span>' +
+                '<span class="pool-bar-pct">' + pct + "%</span></div>";
+            }).join("") + "</div>";
+        }).join("") + "</div>";
+
+      if (n) {
+        const avgW = Math.round(bets.reduce(function (a, b) { return a + b.weight; }, 0) / n);
+        const avgL = Math.round(bets.reduce(function (a, b) { return a + b.length; }, 0) / n);
+        html += '<div class="pool-avgs" style="margin-top:22px;">' +
+          '<div class="pool-avg-box"><div class="n">' + fmtWeight(avgW) + '</div><div class="l">' + t("pool_avg_weight") + "</div></div>" +
+          '<div class="pool-avg-box"><div class="n">' + fmtLength(avgL) + '</div><div class="l">' + t("pool_avg_length") + "</div></div>" +
+          "</div>";
+      }
+
+      html += '<h4 style="margin-top:26px; color:var(--sage-deep);">' + t("pool_all_h") + "</h4>" + betsTableHtml(bets, null);
+      setContent(html);
+    }
+
+    function renderLeaderboard() {
+      const actual = state.data.actual;
+      const ranked = state.data.bets.map(function (b, i) {
+        return { bet: b, order: i, score: scoreBet(b, actual) };
+      }).sort(function (a, b) { return b.score.total - a.score.total || a.order - b.order; });
+
+      setContent(
+        '<p class="pool-q">' + t("pool_born_h") + "</p>" +
+        '<div class="pool-actual">' + STEPS.map(function (s) {
+          return '<div class="pool-avg-box"><div class="n">' + displayVal(s.key, actual[s.key]) + '</div><div class="l">' + t("pool_cat_" + s.key) + "</div></div>";
+        }).join("") + "</div>" +
+        '<p class="pool-q" style="font-size:1.25rem;">' + t("pool_lb_h") + "</p>" +
+        '<p class="pool-sub">' + t("pool_lb_sub") + "</p>" +
+        betsTableHtml(ranked.map(function (r) { return r.bet; }), ranked) +
+        '<details class="pool-scoring"><summary>' + t("pool_scoring_h") + "</summary><p>" + t("pool_scoring_txt") + "</p></details>");
+    }
+
+    function betsTableHtml(bets, ranked) {
+      const medals = [
+        '<i data-lucide="trophy" class="pool-medal-1"></i>',
+        '<i data-lucide="medal" class="pool-medal-2"></i>',
+        '<i data-lucide="medal" class="pool-medal-3"></i>',
+      ];
+      const head = "<tr>" + (ranked ? "<th></th>" : "") + "<th>" + t("pool_name_col") + "</th>" +
+        STEPS.map(function (s) { return "<th>" + t("pool_cat_" + s.key) + "</th>"; }).join("") +
+        (ranked ? "<th>" + t("pool_total_col") + "</th>" : "") + "</tr>";
+      const rows = bets.map(function (bet, i) {
+        let cells = (ranked ? "<td>" + (medals[i] ? '<span class="pool-medal">' + medals[i] + "</span>" : i + 1) + "</td>" : "") +
+          "<td>" + nameCell(bet) + "</td>";
+        cells += STEPS.map(function (s) {
+          const val = displayVal(s.key, bet[s.key]);
+          if (!ranked) return "<td>" + val + "</td>";
+          const pts = ranked[i].score[s.key];
+          return '<td class="' + (pts ? "pts" : "zero") + '">' + val + " · " + pts + "</td>";
+        }).join("");
+        if (ranked) cells += '<td class="pts">' + ranked[i].score.total + "</td>";
+        return '<tr class="' + (isMe(bet) ? "me" : "") + '">' + cells + "</tr>";
+      }).join("");
+      return '<div class="pool-table-wrap"><table class="pool-table' + (ranked ? " ranked" : "") + '">' + head + rows + "</table></div>";
+    }
+
+    document.addEventListener("langchange", render);
+
+    if (saved && saved.name) {
+      state.name = saved.name;
+      state.mode = "done";
+    }
+    render();
   })();
 </script>
 </body>
