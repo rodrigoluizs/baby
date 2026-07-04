@@ -1144,7 +1144,10 @@
     }
     window.addEventListener("hashchange", syncRoute);
     document.getElementById("pool-exit").addEventListener("click", function () {
-      if (history.length > 1) history.back(); else location.hash = "";
+      // history.back() would leave the site when the pool link was opened directly;
+      // clearing the hash always lands on the main page
+      history.replaceState(null, "", location.pathname + location.search);
+      syncRoute();
     });
     syncRoute();
 
