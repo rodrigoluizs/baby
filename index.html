@@ -507,6 +507,16 @@
   }
   @keyframes poolspin { to { transform: rotate(360deg); } }
 
+  .pool-refresh {
+    display: flex; align-items: center; justify-content: center;
+    margin: 2px 0 -8px auto; width: 36px; height: 36px; border-radius: 50%;
+    border: 1px solid rgba(120,110,90,.2); background: #fff; color: var(--sage-deep);
+    cursor: pointer; box-shadow: 0 5px 12px -7px rgba(120,110,90,.6);
+  }
+  .pool-refresh:hover { background: #f7f3ea; }
+  .pool-refresh svg { width: 18px; height: 18px; stroke-width: 2.2; }
+  .pool-refresh.spinning svg { animation: poolspin .7s linear infinite; }
+
   /* pool results */
   .pool-sub { color: var(--ink-soft); font-weight: 600; margin-bottom: 20px; }
   .pool-stats { display: grid; gap: 22px; max-width: 520px; margin: 0 auto; text-align: left; }
@@ -815,6 +825,7 @@
       pool_sending: "Enviando...",
       pool_submit_err: "Ops, não conseguimos enviar sua aposta.",
       pool_retry: "Tentar de novo",
+      pool_refresh: "Atualizar",
       pool_success: 'Aposta registrada! <i data-lucide="party-popper" class="txt-ico ico-party"></i>',
       pool_results_h: "Como estão as apostas",
       pool_bets_one: "%1 aposta até agora", pool_bets_many: "%1 apostas até agora",
@@ -900,6 +911,7 @@
       pool_sending: "Sending...",
       pool_submit_err: "Oops, we couldn't submit your bet.",
       pool_retry: "Try again",
+      pool_refresh: "Refresh",
       pool_success: 'Bet placed! <i data-lucide="party-popper" class="txt-ico ico-party"></i>',
       pool_results_h: "How everyone is betting",
       pool_bets_one: "%1 bet so far", pool_bets_many: "%1 bets so far",
@@ -985,6 +997,7 @@
       pool_sending: "Wird gesendet...",
       pool_submit_err: "Ups, dein Tipp konnte nicht gesendet werden.",
       pool_retry: "Nochmal versuchen",
+      pool_refresh: "Aktualisieren",
       pool_success: 'Tipp gespeichert! <i data-lucide="party-popper" class="txt-ico ico-party"></i>',
       pool_results_h: "So wird getippt",
       pool_bets_one: "Bisher %1 Tipp", pool_bets_many: "Bisher %1 Tipps",
@@ -1190,6 +1203,8 @@
     const state = { tab: "bet", mode: "intro", rmode: "loading", step: 0, fromReview: false, first: "", last: "", name: "", answers: {}, data: null, err: false };
     let saved = null;
     try { saved = JSON.parse(localStorage.getItem("bs_pool_bet") || "null"); } catch (e) {}
+    // restore the tab so a refresh keeps you on the results screen
+    try { if (localStorage.getItem("bs_pool_tab") === "results") state.tab = "results"; } catch (e) {}
 
     function t(key) { return (I18N[window.CURRENT_LANG] || I18N.pt)[key] || key; }
     function esc(s) {
@@ -1233,16 +1248,28 @@
     }
 
     function setContent(html) {
-      box.innerHTML = tabsHtml() + html;
+      // a refresh button lives on the results screen so people can pull fresh bets
+      const refresh = (state.tab === "results" && state.rmode === "results")
+        ? '<button class="pool-refresh" id="pool-refresh" aria-label="' + t("pool_refresh") + '" title="' + t("pool_refresh") + '"><i data-lucide="refresh-cw"></i></button>'
+        : "";
+      box.innerHTML = tabsHtml() + refresh + html;
       box.querySelectorAll(".pool-tab").forEach(function (b) {
         b.addEventListener("click", function () {
           const tab = b.getAttribute("data-tab");
           if (tab === state.tab) return;
-          state.tab = tab;
+          setTab(tab);
           if (tab === "results" && !state.data) { state.rmode = "loading"; loadResults(); }
           render();
         });
       });
+      const rb = box.querySelector("#pool-refresh");
+      if (rb) rb.addEventListener("click", function () { rb.classList.add("spinning"); loadResults(); });
+    }
+
+    // remember the active tab so a refresh keeps you where you were
+    function setTab(tab) {
+      state.tab = tab;
+      try { localStorage.setItem("bs_pool_tab", tab); } catch (e) {}
     }
 
     // ---- wizard screens ----
@@ -1427,7 +1454,7 @@
         .then(function (res) {
           if (!res.ok) {
             // the results were entered while this bet was being filled in
-            if (res.error === "closed") { state.tab = "results"; state.rmode = "loading"; render(); loadResults(); return; }
+            if (res.error === "closed") { setTab("results"); state.rmode = "loading"; render(); loadResults(); return; }
             throw new Error(res.error || "server error");
           }
           saved = { name: state.name, bet: state.answers, ts: Date.now() };
@@ -1435,7 +1462,7 @@
           const r = box.getBoundingClientRect();
           confettiBurst(r.left + r.width / 2, Math.max(90, r.top + 60));
           state.mode = "done";
-          state.tab = "results"; state.rmode = "loading";
+          setTab("results"); state.rmode = "loading";
           render(); loadResults();
         })
         .catch(function (err) {
@@ -1452,7 +1479,7 @@
           state.data = res; state.rmode = "results";
           if (poolClosed()) {
             // results are in: betting is closed, land everyone on the leaderboard
-            state.tab = "results";
+            setTab("results");
             render();
             return;
           }
