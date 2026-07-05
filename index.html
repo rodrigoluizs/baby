@@ -385,6 +385,7 @@
   .pool-exit:hover { background: #fff; }
   .pool-card { text-align: center; }
   .pool-intro-txt { color: var(--ink-soft); max-width: 46ch; margin: 0 auto 20px; }
+  .pool-name-fields { display: flex; flex-direction: column; align-items: center; }
   .pool-name {
     width: 100%; max-width: 340px;
     font-family: "Quicksand", sans-serif; font-size: 1.1rem; font-weight: 600;
@@ -779,7 +780,7 @@
       pool_title: "Bolão do Bebê",
       pool_exit: "← Voltar ao site",
       pool_intro: 'Adivinhe como o bebê vai chegar. Quem acertar mais leva um prêmio misterioso <i data-lucide="trophy" class="txt-ico ico-gold"></i>',
-      pool_name_ph: "Seu nome",
+      pool_name_ph: "Nome", pool_surname_ph: "Sobrenome",
       pool_start: "Começar →",
       pool_back: "← Voltar",
       pool_ok: "Confirmar",
@@ -864,7 +865,7 @@
       pool_title: "Baby Pool",
       pool_exit: "← Back to the site",
       pool_intro: 'Guess how the baby will arrive. Whoever gets the most right wins a mystery prize <i data-lucide="trophy" class="txt-ico ico-gold"></i>',
-      pool_name_ph: "Your name",
+      pool_name_ph: "First name", pool_surname_ph: "Last name",
       pool_start: "Start →",
       pool_back: "← Back",
       pool_ok: "Confirm",
@@ -949,7 +950,7 @@
       pool_title: "Baby-Tippspiel",
       pool_exit: "← Zurück zur Seite",
       pool_intro: 'Rate, wie das Baby zur Welt kommt. Wer am besten liegt, gewinnt einen Überraschungspreis <i data-lucide="trophy" class="txt-ico ico-gold"></i>',
-      pool_name_ph: "Dein Name",
+      pool_name_ph: "Vorname", pool_surname_ph: "Nachname",
       pool_start: "Los geht's →",
       pool_back: "← Zurück",
       pool_ok: "Bestätigen",
@@ -1180,7 +1181,7 @@
     const POINTS = { sex: 2, dayNight: 1, hair: 2, eyes: 2, weekday: 3, week: 3 };
 
     // tab "bet" runs modes intro→step→review→sending→done; tab "results" runs rmode loading→results/loaderr
-    const state = { tab: "bet", mode: "intro", rmode: "loading", step: 0, fromReview: false, name: "", answers: {}, data: null, err: false };
+    const state = { tab: "bet", mode: "intro", rmode: "loading", step: 0, fromReview: false, first: "", last: "", name: "", answers: {}, data: null, err: false };
     let saved = null;
     try { saved = JSON.parse(localStorage.getItem("bs_pool_bet") || "null"); } catch (e) {}
 
@@ -1236,20 +1237,32 @@
 
     // ---- wizard screens ----
     function renderIntro() {
+      const nameReady = function () { return state.first.trim() && state.last.trim(); };
       setContent(
         '<p class="pool-intro-txt">' + t("pool_intro") + "</p>" +
-        '<div><input class="pool-name" id="pool-name" maxlength="60" autocomplete="name" placeholder="' + t("pool_name_ph") + '" value="' + esc(state.name) + '"></div>' +
-        '<button class="pool-btn" id="pool-start"' + (state.name.trim() ? "" : " disabled") + ">" + t("pool_start") + "</button>");
-      const input = document.getElementById("pool-name");
+        '<div class="pool-name-fields">' +
+          '<input class="pool-name" id="pool-first" maxlength="40" autocomplete="given-name" placeholder="' + t("pool_name_ph") + '" value="' + esc(state.first) + '">' +
+          '<input class="pool-name" id="pool-last" maxlength="40" autocomplete="family-name" placeholder="' + t("pool_surname_ph") + '" value="' + esc(state.last) + '">' +
+        "</div>" +
+        '<button class="pool-btn" id="pool-start"' + (nameReady() ? "" : " disabled") + ">" + t("pool_start") + "</button>");
+      const first = document.getElementById("pool-first");
+      const last = document.getElementById("pool-last");
       const start = document.getElementById("pool-start");
-      input.addEventListener("input", function () {
-        state.name = input.value;
-        start.disabled = !state.name.trim();
-      });
-      input.addEventListener("keydown", function (ev) { if (ev.key === "Enter" && state.name.trim()) go(); });
+      function sync() {
+        state.first = first.value;
+        state.last = last.value;
+        start.disabled = !nameReady();
+      }
+      first.addEventListener("input", sync);
+      last.addEventListener("input", sync);
+      function onEnter(ev) { if (ev.key === "Enter" && nameReady()) go(); }
+      first.addEventListener("keydown", onEnter);
+      last.addEventListener("keydown", onEnter);
       start.addEventListener("click", go);
       function go() {
-        state.name = state.name.trim();
+        state.first = state.first.trim();
+        state.last = state.last.trim();
+        state.name = (state.first + " " + state.last).trim();
         state.mode = "step"; state.step = 0; state.fromReview = false;
         render();
       }
