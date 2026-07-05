@@ -21,6 +21,8 @@ function doPost(e) {
   var lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
+    // once the real birth data is in, betting is closed for everyone
+    if (readActual_()) return json_({ ok: false, error: "closed" });
     var bet = validateBet_(JSON.parse(e.postData.contents));
     if (!bet) return json_({ ok: false, error: "invalid bet" });
     ensureBetsSheet_().appendRow([

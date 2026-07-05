@@ -1221,7 +1221,11 @@
       if (window.lucide) lucide.createIcons();
     }
 
+    function poolClosed() { return !!(state.data && state.data.actual); }
+
     function tabsHtml() {
+      // betting is over once the results are in — only the leaderboard remains
+      if (poolClosed()) return "";
       return '<div class="pool-tabs">' +
         '<button class="pool-tab' + (state.tab === "bet" ? " active" : "") + '" data-tab="bet">' + t("pool_tab_bet") + "</button>" +
         '<button class="pool-tab' + (state.tab === "results" ? " active" : "") + '" data-tab="results">' + t("pool_tab_results") + "</button>" +
@@ -1421,7 +1425,11 @@
       fetch(POOL_URL, { method: "POST", body: JSON.stringify(payload) })
         .then(function (r) { return r.json(); })
         .then(function (res) {
-          if (!res.ok) throw new Error(res.error || "server error");
+          if (!res.ok) {
+            // the results were entered while this bet was being filled in
+            if (res.error === "closed") { state.tab = "results"; state.rmode = "loading"; render(); loadResults(); return; }
+            throw new Error(res.error || "server error");
+          }
           saved = { name: state.name, bet: state.answers, ts: Date.now() };
           try { localStorage.setItem("bs_pool_bet", JSON.stringify(saved)); } catch (e) {}
           const r = box.getBoundingClientRect();
@@ -1442,6 +1450,12 @@
         .then(function (res) {
           if (!res.ok) throw new Error("server error");
           state.data = res; state.rmode = "results";
+          if (poolClosed()) {
+            // results are in: betting is closed, land everyone on the leaderboard
+            state.tab = "results";
+            render();
+            return;
+          }
           if (saved && !res.bets.some(function (b) { return b.name === saved.name; })) {
             // the bet was removed from the sheet (admin cleanup): free this device to bet again
             saved = null;
@@ -1566,8 +1580,10 @@
     if (saved && saved.name) {
       state.name = saved.name;
       state.mode = "done";
-      loadResults(); // also verifies the bet still exists in the sheet
     }
+    // always fetch upfront: verifies a saved bet still exists and lets us
+    // close betting the moment the results are in, even for first-time visitors
+    loadResults();
     render();
   })();
 </script>
