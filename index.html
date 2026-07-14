@@ -602,10 +602,8 @@
 
 <header class="topbar">
   <nav class="topnav" aria-label="Seções">
-    <a href="#localizacao" data-i18n="nav_loc"></a>
-    <a href="#presente" data-i18n="nav_gift"></a>
-    <a href="#baby-pool" data-i18n="nav_pool" data-pool-ui hidden></a>
-    <a href="#rsvp" class="topnav-cta" data-i18n="nav_rsvp"></a>
+    <a href="https://www.amazon.de/baby-reg/baby-silva-september-2026-berlin/3E5MNDFE6E8C4" target="_blank" rel="noopener" data-i18n="nav_gift"></a>
+    <a href="#baby-pool" class="topnav-cta" data-i18n="nav_pool" data-pool-ui hidden></a>
   </nav>
   <nav class="lang" id="lang" aria-label="Idioma / Language / Sprache">
     <button data-lang="pt">PT</button>
@@ -632,6 +630,8 @@
   </div>
   <p class="subtitle" data-i18n="subtitle"></p>
 
+  <a class="map-btn" href="#baby-pool" style="margin-top:26px;" data-i18n="hero_cta" data-pool-ui hidden></a>
+
   <div class="hero-animals" aria-hidden="true">
     <span><i data-lucide="baby"></i></span>
     <span><i data-lucide="sun"></i></span>
@@ -642,7 +642,7 @@
 <div class="wrap">
 
   <div class="date-card reveal">
-    <div class="big-date">05 <span>|</span> 07 <span>|</span> 2026</div>
+    <div class="big-date">07 <span>|</span> 09 <span>|</span> 2026</div>
     <div class="when" data-i18n="when"></div>
     <div class="countdown" id="countdown" aria-label="Countdown">
       <div class="cd-box"><div class="cd-num" id="cd-days">--</div><div class="cd-lbl" data-i18n="cd_days"></div></div>
@@ -650,82 +650,7 @@
       <div class="cd-box"><div class="cd-num" id="cd-mins">--</div><div class="cd-lbl" data-i18n="cd_mins"></div></div>
       <div class="cd-box"><div class="cd-num" id="cd-secs">--</div><div class="cd-lbl" data-i18n="cd_secs"></div></div>
     </div>
-  </div>
-
-  <section class="reveal">
-    <h2 class="section-title" data-i18n="info_title"></h2>
-    <div class="cards">
-      <a class="card" href="#rsvp">
-        <div class="ico ico-sage"><i data-lucide="party-popper"></i></div>
-        <h3 data-i18n="c1_title"></h3>
-        <p data-i18n="c1_desc"></p>
-        <span class="cta" data-i18n="c1_cta"></span>
-      </a>
-      <a class="card" href="#localizacao">
-        <div class="ico ico-peach"><i data-lucide="map-pin"></i></div>
-        <h3 data-i18n="c2_title"></h3>
-        <p data-i18n="c2_desc"></p>
-        <span class="cta" data-i18n="c2_cta"></span>
-      </a>
-      <a class="card" href="#presente">
-        <div class="ico ico-sun"><i data-lucide="gift"></i></div>
-        <h3 data-i18n="c3_title"></h3>
-        <p data-i18n="c3_desc"></p>
-        <span class="cta" data-i18n="c3_cta"></span>
-      </a>
-      <a class="card" href="#baby-pool" data-pool-ui hidden>
-        <div class="ico ico-pink"><i data-lucide="dices"></i></div>
-        <h3 data-i18n="c4_title"></h3>
-        <p data-i18n="c4_desc"></p>
-        <span class="cta" data-i18n="c4_cta"></span>
-      </a>
-    </div>
-  </section>
-
-  <section class="reveal">
-    <h2 class="section-title" data-i18n="rem_title"></h2>
-    <div class="reminders">
-      <ul>
-        <li><span class="r-ico"><i data-lucide="cup-soda"></i></span><span data-i18n="rem_1"></span></li>
-        <li><span class="r-ico"><i data-lucide="cloud-rain"></i></span><span data-i18n="rem_2"></span></li>
-        <li><span class="r-ico"><i data-lucide="calendar-check"></i></span><span data-i18n="rem_3"></span></li>
-        <li><span class="r-ico"><i data-lucide="heart"></i></span><span data-i18n="rem_4"></span></li>
-      </ul>
-    </div>
-  </section>
-
-  <section id="localizacao" class="reveal">
-    <h2 class="section-title" data-i18n="loc_title"></h2>
-    <div class="reminders" style="text-align:center;">
-      <div class="map-embed">
-        <iframe src="https://maps.google.com/maps?q=52.529056,13.443694&z=17&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Volkspark Friedrichshain" allowfullscreen></iframe>
-      </div>
-      <p style="font-size:1.3rem; display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="map-pin" class="inline-pin"></i> <strong data-i18n="loc_addr"></strong></p>
-      <div class="loc-details">
-        <p><i data-lucide="store"></i> <span data-i18n="loc_ref"></span></p>
-        <p><i data-lucide="tram-front"></i> <span data-i18n="loc_tram"></span></p>
-      </div>
-      <a class="map-btn" href="https://maps.app.goo.gl/VNUqX8U8XrxMbKxg8" target="_blank" rel="noopener" data-i18n="loc_sub"></a>
-    </div>
-  </section>
-
-  <section id="presente" class="reveal">
-    <h2 class="section-title" data-i18n="gift_title"></h2>
-    <div class="reminders" style="text-align:center;">
-      <p style="font-size:1.15rem;" data-i18n="gift_line"></p>
-      <p style="color:var(--ink-soft); margin-top:6px;" data-i18n="gift_sub"></p>
-      <div class="gift-btns">
-        <a class="map-btn" href="https://www.amazon.de/baby-reg/baby-silva-september-2026-berlin/3E5MNDFE6E8C4" target="_blank" rel="noopener" data-i18n="gift_btn"></a>
-        <a class="map-btn map-btn-alt" href="https://www.paypal.com/pools/c/9pQweuuPX9" target="_blank" rel="noopener" data-i18n="gift_btn2"></a>
-      </div>
-    </div>
-  </section>
-
-  <div id="rsvp" class="rsvp-banner reveal">
-    <h2 data-i18n="rsvp_h"></h2>
-    <p data-i18n="rsvp_p"></p>
-    <a class="btn" id="rsvp-btn" href="https://forms.gle/A43m9awgXFaiy7gh6" target="_blank" rel="noopener" data-i18n="rsvp_btn"></a>
-    <p class="deadline" data-i18n="rsvp_deadline"></p>
+    <p class="shower-thanks" style="margin-top:20px;font-size:.95rem;color:var(--ink-soft);font-weight:600;" data-i18n="shower_thanks"></p>
   </div>
 
   <footer>
@@ -761,38 +686,16 @@
     pt: {
       _htmlLang: "pt-BR",
       docTitle: "Chá de Bebê Nico/Luna",
-      nav_loc: "Local", nav_gift: "Presente", nav_rsvp: "Confirmar",
-      eyebrow: "Save the date",
-      title: "Chá de Bebê",
+      nav_gift: "Presente",
+      eyebrow: "Da nossa pequena família",
+      title: "Obrigado!",
       babyname: 'Nico <span class="name-sep">|</span> Luna',
-      subtitle: 'Venha celebrar com a gente esse momento tão especial <i data-lucide="heart" class="txt-ico heart-pink"></i>',
-      when: "Domingo, das 15h às 19h",
+      subtitle: 'Obrigado por celebrar com a gente. Agora é esperar o bebê, e ainda dá tempo de entrar no bolão <i data-lucide="heart" class="txt-ico heart-pink"></i>',
+      when: "O bebê está a caminho",
+      shower_thanks: "Obrigado por deixar o nosso chá tão especial no dia 05·07 💛",
+      hero_cta: "Fazer minha aposta →",
       cd_days: "dias", cd_hours: "horas", cd_mins: "min", cd_secs: "seg",
-      info_title: "Tudo que você precisa saber",
-      c1_title: "Confirmar", c1_desc: "Avise se você vem celebrar com a gente", c1_cta: "Confirmar →",
-      c2_title: "Localização", c2_desc: "Veja onde a festa vai acontecer", c2_cta: "Ver mapa →",
-      c3_title: "Presente", c3_desc: "Sugestões para presentear o bebê", c3_cta: "Ver opções →",
-      rem_title: "Lembretes",
-      rem_1: 'Traga a <span class="highlight">sua própria bebida</span> e uma <span class="highlight">toalha para sentar</span>.',
-      rem_2: 'Se chover, o evento será <span class="highlight">cancelado</span>.',
-      rem_3: 'Confirme sua presença até <span class="highlight">28 de junho de 2026</span>.',
-      rem_4: 'Venha com roupa confortável e muito amor para dar <i data-lucide="heart" class="txt-ico heart-pink"></i>',
-      loc_title: "Localização",
-      loc_addr: "Volkspark Friedrichshain",
-      loc_ref: "Próximo ao Kiosk Neuer Hain",
-      loc_tram: "Tram M10: Paul-Heyse-Straße",
-      loc_sub: "Abrir no Google Maps →",
-      gift_title: "Presente",
-      gift_line: "Sua presença já é o melhor presente!",
-      gift_sub: "Mas se quiser mimar o bebê, criamos uma lista na Amazon e uma vaquinha no PayPal.",
-      gift_btn: "Ver lista na Amazon →",
-      gift_btn2: "Contribuir no PayPal →",
-      rsvp_h: "Vem com a gente?",
-      rsvp_p: "Confirme sua presença e faça parte desse dia especial.",
-      rsvp_btn: "Confirmar presença \u{1F44B}",
-      rsvp_deadline: "✨ Confirme até <strong>28 de junho de 2026</strong>",
       nav_pool: "Bolão",
-      c4_title: "Bolão", c4_desc: "Aposte em como o bebê vai nascer", c4_cta: "Apostar →",
       pool_title: "Bolão do Bebê",
       pool_exit: "← Voltar ao site",
       pool_intro: 'Adivinhe como o bebê vai chegar. Quem acertar mais leva um prêmio misterioso <i data-lucide="trophy" class="txt-ico ico-gold"></i>',
@@ -839,7 +742,7 @@
       pool_load_err: "Não deu para carregar os resultados.",
       pool_born_h: 'O bebê nasceu! <i data-lucide="party-popper" class="txt-ico ico-party"></i>',
       pool_lb_h: "Ranking final",
-      pool_lb_sub: "Pontos por categoria — quem acertou mais?",
+      pool_lb_sub: "Pontos por categoria. Quem acertou mais?",
       pool_name_col: "Nome", pool_total_col: "Total",
       pool_scoring_h: "Como funciona a pontuação",
       pool_scoring_txt: "Sexo: 2 pts · Dia/Noite: 1 pt · Cabelo: 2 pts · Olhos: 2 pts · Dia da semana: 3 pts · Semanas: 3 pts (semana vizinha: 1 pt) · Peso: ±100g → 4 / ±250g → 2 / ±500g → 1 · Comprimento: ±1cm → 4 / ±2cm → 2 / ±3cm → 1. Empate: quem apostou primeiro fica na frente."
@@ -847,38 +750,16 @@
     en: {
       _htmlLang: "en",
       docTitle: "Baby Shower Nico/Luna",
-      nav_loc: "Location", nav_gift: "Gift", nav_rsvp: "RSVP",
-      eyebrow: "Save the date",
-      title: "Baby Shower",
+      nav_gift: "Gift",
+      eyebrow: "From our little family",
+      title: "Thank you!",
       babyname: 'Nico <span class="name-sep">|</span> Luna',
-      subtitle: 'Come celebrate this special moment with us <i data-lucide="heart" class="txt-ico heart-pink"></i>',
-      when: "Sunday, 3–7 PM",
+      subtitle: 'Thank you for celebrating with us. Now we wait for the baby, and there\'s still time to place your bet <i data-lucide="heart" class="txt-ico heart-pink"></i>',
+      when: "Baby is on the way",
+      shower_thanks: "Thanks for making our shower so special on 05·07 💛",
+      hero_cta: "Place your bet →",
       cd_days: "days", cd_hours: "hours", cd_mins: "min", cd_secs: "sec",
-      info_title: "Everything you need to know",
-      c1_title: "RSVP", c1_desc: "Let us know if you're coming", c1_cta: "RSVP →",
-      c2_title: "Location", c2_desc: "See where the party will be", c2_cta: "View map →",
-      c3_title: "Gift", c3_desc: "Gift ideas for the baby", c3_cta: "View options →",
-      rem_title: "Reminders",
-      rem_1: 'Bring <span class="highlight">your own drink</span> and a <span class="highlight">towel to sit on</span>.',
-      rem_2: 'If it rains, the event will be <span class="highlight">cancelled</span>.',
-      rem_3: 'Please RSVP by <span class="highlight">June 28, 2026</span>.',
-      rem_4: 'Come in comfy clothes and bring lots of love <i data-lucide="heart" class="txt-ico heart-pink"></i>',
-      loc_title: "Location",
-      loc_addr: "Volkspark Friedrichshain",
-      loc_ref: "Near the Neuer Hain kiosk",
-      loc_tram: "Tram M10: Paul-Heyse-Straße",
-      loc_sub: "Open in Google Maps →",
-      gift_title: "Gift",
-      gift_line: "Your presence is the best gift!",
-      gift_sub: "But if you'd like to spoil the baby, we made an Amazon registry and a PayPal pool.",
-      gift_btn: "View Amazon registry →",
-      gift_btn2: "Chip in via PayPal →",
-      rsvp_h: "Will you join us?",
-      rsvp_p: "RSVP and be part of this special day.",
-      rsvp_btn: "RSVP now \u{1F44B}",
-      rsvp_deadline: "✨ RSVP by <strong>June 28, 2026</strong>",
       nav_pool: "Baby Pool",
-      c4_title: "Baby Pool", c4_desc: "Bet on how the baby will arrive", c4_cta: "Place your bet →",
       pool_title: "Baby Pool",
       pool_exit: "← Back to the site",
       pool_intro: 'Guess how the baby will arrive. Whoever gets the most right wins a mystery prize <i data-lucide="trophy" class="txt-ico ico-gold"></i>',
@@ -925,7 +806,7 @@
       pool_load_err: "Couldn't load the results.",
       pool_born_h: 'The baby is here! <i data-lucide="party-popper" class="txt-ico ico-party"></i>',
       pool_lb_h: "Final leaderboard",
-      pool_lb_sub: "Points per category — who guessed best?",
+      pool_lb_sub: "Points per category. Who guessed best?",
       pool_name_col: "Name", pool_total_col: "Total",
       pool_scoring_h: "How scoring works",
       pool_scoring_txt: "Sex: 2 pts · Day/Night: 1 pt · Hair: 2 pts · Eyes: 2 pts · Weekday: 3 pts · Weeks: 3 pts (adjacent week: 1 pt) · Weight: ±100g → 4 / ±250g → 2 / ±500g → 1 · Length: ±1cm → 4 / ±2cm → 2 / ±3cm → 1. Ties: the earlier bet ranks higher."
@@ -933,38 +814,16 @@
     de: {
       _htmlLang: "de",
       docTitle: "Babyparty Nico/Luna",
-      nav_loc: "Ort", nav_gift: "Geschenk", nav_rsvp: "Zusagen",
-      eyebrow: "Save the date",
-      title: "Babyparty",
+      nav_gift: "Geschenk",
+      eyebrow: "Von unserer kleinen Familie",
+      title: "Danke!",
       babyname: 'Nico <span class="name-sep">|</span> Luna',
-      subtitle: 'Feiere diesen besonderen Moment mit uns <i data-lucide="heart" class="txt-ico heart-pink"></i>',
-      when: "Sonntag, 15–19 Uhr",
+      subtitle: 'Danke, dass ihr mit uns gefeiert habt. Jetzt heißt es warten, und ihr könnt noch beim Tippspiel mitmachen <i data-lucide="heart" class="txt-ico heart-pink"></i>',
+      when: "Das Baby ist unterwegs",
+      shower_thanks: "Danke, dass ihr unsere Babyparty am 05.07. so besonders gemacht habt 💛",
+      hero_cta: "Jetzt tippen →",
       cd_days: "Tage", cd_hours: "Std", cd_mins: "Min", cd_secs: "Sek",
-      info_title: "Alles, was du wissen musst",
-      c1_title: "Zusagen", c1_desc: "Sag uns Bescheid, ob du kommst", c1_cta: "Zusagen →",
-      c2_title: "Ort", c2_desc: "Sieh, wo die Feier stattfindet", c2_cta: "Karte ansehen →",
-      c3_title: "Geschenk", c3_desc: "Geschenkideen für das Baby", c3_cta: "Optionen ansehen →",
-      rem_title: "Hinweise",
-      rem_1: 'Bring <span class="highlight">dein eigenes Getränk</span> und ein <span class="highlight">Handtuch zum Sitzen</span> mit.',
-      rem_2: 'Bei Regen wird die Feier <span class="highlight">abgesagt</span>.',
-      rem_3: 'Bitte sage bis zum <span class="highlight">28. Juni 2026</span> zu.',
-      rem_4: 'Komm in bequemer Kleidung und mit viel Liebe <i data-lucide="heart" class="txt-ico heart-pink"></i>',
-      loc_title: "Ort",
-      loc_addr: "Volkspark Friedrichshain",
-      loc_ref: "In der Nähe vom Kiosk Neuer Hain",
-      loc_tram: "Tram M10: Paul-Heyse-Straße",
-      loc_sub: "In Google Maps öffnen →",
-      gift_title: "Geschenk",
-      gift_line: "Deine Anwesenheit ist das schönste Geschenk!",
-      gift_sub: "Wenn du das Baby verwöhnen möchtest, haben wir eine Amazon-Wunschliste und einen PayPal-Pool erstellt.",
-      gift_btn: "Amazon-Wunschliste ansehen →",
-      gift_btn2: "Über PayPal beitragen →",
-      rsvp_h: "Bist du dabei?",
-      rsvp_p: "Sag zu und sei Teil dieses besonderen Tages.",
-      rsvp_btn: "Jetzt zusagen \u{1F44B}",
-      rsvp_deadline: "✨ Zusagen bis <strong>28. Juni 2026</strong>",
       nav_pool: "Tippspiel",
-      c4_title: "Tippspiel", c4_desc: "Tippe, wie das Baby zur Welt kommt", c4_cta: "Jetzt tippen →",
       pool_title: "Baby-Tippspiel",
       pool_exit: "← Zurück zur Seite",
       pool_intro: 'Rate, wie das Baby zur Welt kommt. Wer am besten liegt, gewinnt einen Überraschungspreis <i data-lucide="trophy" class="txt-ico ico-gold"></i>',
@@ -1011,7 +870,7 @@
       pool_load_err: "Die Ergebnisse konnten nicht geladen werden.",
       pool_born_h: 'Das Baby ist da! <i data-lucide="party-popper" class="txt-ico ico-party"></i>',
       pool_lb_h: "Endstand",
-      pool_lb_sub: "Punkte pro Kategorie — wer lag am besten?",
+      pool_lb_sub: "Punkte pro Kategorie. Wer lag am besten?",
       pool_name_col: "Name", pool_total_col: "Gesamt",
       pool_scoring_h: "So wird gezählt",
       pool_scoring_txt: "Geschlecht: 2 Pkt. · Tag/Nacht: 1 Pkt. · Haare: 2 Pkt. · Augen: 2 Pkt. · Wochentag: 3 Pkt. · Wochen: 3 Pkt. (Nachbarwoche: 1 Pkt.) · Gewicht: ±100 g → 4 / ±250 g → 2 / ±500 g → 1 · Größe: ±1 cm → 4 / ±2 cm → 2 / ±3 cm → 1. Gleichstand: der frühere Tipp liegt vorn."
@@ -1080,9 +939,9 @@
     if (window.lucide) lucide.createIcons();
   })();
 
-  // ---- countdown to July 5, 2026, 15:00 (local time) ----
+  // ---- countdown to the due date: September 7, 2026 (local time) ----
   (function () {
-    const target = new Date(2026, 6, 5, 15, 0, 0).getTime();
+    const target = new Date(2026, 8, 7, 0, 0, 0).getTime();
     const els = {
       days: document.getElementById("cd-days"),
       hours: document.getElementById("cd-hours"),
@@ -1113,7 +972,7 @@
     document.querySelectorAll(".reveal").forEach(function (el) { obs.observe(el); });
   })();
 
-  // ---- confetti burst (RSVP click + pool submit) ----
+  // ---- confetti burst (pool submit) ----
   function confettiBurst(x, y) {
     const colors = ["#9aa982", "#e6b99a", "#f4cf6a", "#e7b6b0", "#7d8d68"];
     for (let i = 0; i < 60; i++) {
@@ -1142,10 +1001,6 @@
         }, 16);
       }
   }
-  document.getElementById("rsvp-btn").addEventListener("click", function (ev) {
-    confettiBurst(ev.clientX, ev.clientY);
-  });
-
   // ---- baby betting pool ----
   (function () {
     // Apps Script Web App URL — see apps-script/README.md. Empty = feature hidden.
@@ -1153,7 +1008,6 @@
     if (!POOL_URL) return;
 
     document.querySelectorAll("[data-pool-ui]").forEach(function (el) { el.removeAttribute("hidden"); });
-    document.querySelector(".cards").classList.add("has-pool");
 
     // full-screen page routed by #baby-pool, so the browser/phone back button closes it
     const pool = document.getElementById("baby-pool");
