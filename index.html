@@ -642,15 +642,8 @@
 <div class="wrap">
 
   <div class="date-card reveal">
-    <div class="big-date">07 <span>|</span> 09 <span>|</span> 2026</div>
-    <div class="when" data-i18n="when"></div>
-    <div class="countdown" id="countdown" aria-label="Countdown">
-      <div class="cd-box"><div class="cd-num" id="cd-days">--</div><div class="cd-lbl" data-i18n="cd_days"></div></div>
-      <div class="cd-box"><div class="cd-num" id="cd-hours">--</div><div class="cd-lbl" data-i18n="cd_hours"></div></div>
-      <div class="cd-box"><div class="cd-num" id="cd-mins">--</div><div class="cd-lbl" data-i18n="cd_mins"></div></div>
-      <div class="cd-box"><div class="cd-num" id="cd-secs">--</div><div class="cd-lbl" data-i18n="cd_secs"></div></div>
-    </div>
-    <p class="shower-thanks" style="margin-top:20px;font-size:.95rem;color:var(--ink-soft);font-weight:600;" data-i18n="shower_thanks"></p>
+    <div class="when" style="font-size:clamp(1.5rem,5vw,2.2rem);color:var(--sage-deep);font-weight:700;" data-i18n="when"></div>
+    <p class="shower-thanks" style="margin-top:14px;font-size:.95rem;color:var(--ink-soft);font-weight:600;" data-i18n="shower_thanks"></p>
   </div>
 
   <footer>
@@ -694,7 +687,6 @@
       when: "O bebê está a caminho",
       shower_thanks: "Obrigado por deixar o nosso chá tão especial no dia 05·07 💛",
       hero_cta: "Fazer minha aposta →",
-      cd_days: "dias", cd_hours: "horas", cd_mins: "min", cd_secs: "seg",
       nav_pool: "Bolão",
       pool_title: "Bolão do Bebê",
       pool_exit: "← Voltar ao site",
@@ -706,7 +698,7 @@
       pool_q_sex: "Menino ou menina?",
       pool_boy: "Menino", pool_girl: "Menina",
       pool_q_week: "Com quantas semanas o bebê chega?",
-      pool_week_note: "Previsão: 7 de setembro de 2026 (semana 40)",
+      pool_week_note: "Previsão: por volta da semana 40",
       pool_q_weekday: "Em que dia da semana?",
       pool_wd_mon: "Seg", pool_wd_tue: "Ter", pool_wd_wed: "Qua", pool_wd_thu: "Qui",
       pool_wd_fri: "Sex", pool_wd_sat: "Sáb", pool_wd_sun: "Dom",
@@ -758,7 +750,6 @@
       when: "Baby is on the way",
       shower_thanks: "Thanks for making our shower so special on 05·07 💛",
       hero_cta: "Place your bet →",
-      cd_days: "days", cd_hours: "hours", cd_mins: "min", cd_secs: "sec",
       nav_pool: "Baby Pool",
       pool_title: "Baby Pool",
       pool_exit: "← Back to the site",
@@ -770,7 +761,7 @@
       pool_q_sex: "Boy or girl?",
       pool_boy: "Boy", pool_girl: "Girl",
       pool_q_week: "At how many weeks will the baby arrive?",
-      pool_week_note: "Due date: September 7, 2026 (week 40)",
+      pool_week_note: "Expected around week 40",
       pool_q_weekday: "On which day of the week?",
       pool_wd_mon: "Mon", pool_wd_tue: "Tue", pool_wd_wed: "Wed", pool_wd_thu: "Thu",
       pool_wd_fri: "Fri", pool_wd_sat: "Sat", pool_wd_sun: "Sun",
@@ -822,7 +813,6 @@
       when: "Das Baby ist unterwegs",
       shower_thanks: "Danke, dass ihr unsere Babyparty am 05.07. so besonders gemacht habt 💛",
       hero_cta: "Jetzt tippen →",
-      cd_days: "Tage", cd_hours: "Std", cd_mins: "Min", cd_secs: "Sek",
       nav_pool: "Tippspiel",
       pool_title: "Baby-Tippspiel",
       pool_exit: "← Zurück zur Seite",
@@ -834,7 +824,7 @@
       pool_q_sex: "Junge oder Mädchen?",
       pool_boy: "Junge", pool_girl: "Mädchen",
       pool_q_week: "In welcher Woche kommt das Baby?",
-      pool_week_note: "Errechneter Termin: 7. September 2026 (Woche 40)",
+      pool_week_note: "Voraussichtlich um Woche 40",
       pool_q_weekday: "An welchem Wochentag?",
       pool_wd_mon: "Mo", pool_wd_tue: "Di", pool_wd_wed: "Mi", pool_wd_thu: "Do",
       pool_wd_fri: "Fr", pool_wd_sat: "Sa", pool_wd_sun: "So",
@@ -937,31 +927,6 @@
       layer.appendChild(el);
     }
     if (window.lucide) lucide.createIcons();
-  })();
-
-  // ---- countdown to the due date: September 7, 2026 (local time) ----
-  (function () {
-    const target = new Date(2026, 8, 7, 0, 0, 0).getTime();
-    const els = {
-      days: document.getElementById("cd-days"),
-      hours: document.getElementById("cd-hours"),
-      mins: document.getElementById("cd-mins"),
-      secs: document.getElementById("cd-secs"),
-    };
-    function pad(n) { return String(n).padStart(2, "0"); }
-    function tick() {
-      const diff = target - Date.now();
-      if (diff <= 0) {
-        els.days.textContent = els.hours.textContent = els.mins.textContent = els.secs.textContent = "00";
-        return;
-      }
-      els.days.textContent = Math.floor(diff / 86400000);
-      els.hours.textContent = pad(Math.floor((diff % 86400000) / 3600000));
-      els.mins.textContent = pad(Math.floor((diff % 3600000) / 60000));
-      els.secs.textContent = pad(Math.floor((diff % 60000) / 1000));
-    }
-    tick();
-    setInterval(tick, 1000);
   })();
 
   // ---- scroll reveal ----
